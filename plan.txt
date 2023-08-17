@@ -1,0 +1,16 @@
+a web app that tries to make reservations for you at usually-booked restaurants. 
+
+You input the resy link to the restaurant
+You input the date and time that reservations become available
+
+The web app emails you when it tries to get a place and lets you know if it succeeds or fails. 
+You also get a confirmation email from resy. 
+
+
+Functions needed:
+
+go to the restaurant resy. 
+scrape date and time that reservation is updated from resy page. 
+change reservation bot code so that it automatically visits page at date/time it is updated.
+click buttons on web page.
+input information on web page.

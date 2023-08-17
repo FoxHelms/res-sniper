@@ -1,0 +1,6 @@
+- [ ] write html for home page (Flask, Jinja2, CSS)
+- [ ] Homepage accepts resy link as input
+- [ ] Homepage asks you to confirm restaurant details (name, location)
+- [ ] Homepage asks you to input a bunch of time/location preferences (should be umbrella or place-specific?)
+- [ ] back end finds resy update time for that restaurant and configures bot to run at that time
+- [ ] 
