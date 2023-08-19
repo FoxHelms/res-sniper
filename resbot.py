@@ -42,6 +42,7 @@ class ResBot():
         return resyID
     
     def find_table_at_rest(self, venue_id: int, day: int) -> List[str]:
+        '''find open table at rest'''
 
 
 
