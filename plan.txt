@@ -1,6 +1,7 @@
 a web app that tries to make reservations for you at usually-booked restaurants. 
 
-You input the resy link to the restaurant
+You input the resy link to the restaurant (OR) 
+You input the restuarant name and it gets the resy id. 
 You input the date and time that reservations become available
 
 The web app emails you when it tries to get a place and lets you know if it succeeds or fails. 
@@ -9,8 +10,72 @@ You also get a confirmation email from resy.
 
 Functions needed:
 
-go to the restaurant resy. 
-scrape date and time that reservation is updated from resy page. 
-change reservation bot code so that it automatically visits page at date/time it is updated.
-click buttons on web page.
-input information on web page.
+get auth token 
+Get resy venue id from query string
+find times new reservations become available
+create book token
+post book Request
+
+
+
+Resy API Key: VbWk7s3L4KiK5fzlO7JD3Q5EYolJI7n5
+
+X Resy Auth token: eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJleHAiOjE2OTYyMDA1MDgsInVpZCI6MzY0NTA2NTIsImd0IjoiY29uc3VtZXIiLCJncyI6W10sImV4dHJhIjp7Imd1ZXN0X2lkIjoxMjM0NDM3MjJ9fQ.AA-480DoT0DcVJxcc_QBfOUq-eH2cHT_QbFbse-w7hjFGh9RK9AG4cjf49N3SUdyvD4FkkmHmSSdK18kTk9mmNZ2Aei70dbzxPXkjMsYDWu9h1C36a5tBCvqAxZCKsaMkiWV4hCKZ1IlKeFr4p7BfADjJY0aAySo-7Zb2jAiFOVG0Pvo
+
+
+
+To get rest resy ID:
+
+path: 
+/3/venue?url_slug=INSERT_REST_NAME&location=ny
+
+
+example "shukette"
+/3/venue?url_slug=shukette&location=ny
+
+dat = response.json()
+resyID = dat['id']['resy']
+print(resyID)
+
+ id['resy']
+
+
+
+Paths and stuff
+
+login: 
+/3/auth/password
+email: foxhelms@gmail.com
+password: _9mKxuSu2Wr8&Vx
+
+
+encoded url: email=foxhelms%40gmail.com&password=_9mKxuSu2Wr8%26Vx
+
+
+venue search: Don Angie in the West Village
+/3/venue?url_slug=don-angie&location=ny
+
+Request Payload for Shukette reservation:
+{"commit":1,"config_id":"rgs://resy/8579/2030123/2/2023-08-17/2023-08-17/22:45:00/2/Dining Room","day":"2023-08-17","party_size":2}
+
+POST details (shukette)
+Venue ID: 8579
+service_type_id: 2
+
+{"commit":1,"config_id":"rgs://resy/8579/2030123/2/2023-08-17/2023-08-17/22:45:00/2/Dining Room","day":"2023-08-17","party_size":2}
+
+
+Post Book:
+/3/book
+
+Encoding: application/x-www-form-urlencoded
+
+Book token:
+
+book_token=kZCqvyC6%7CO6SRxkYeM8zHwuzqZ7KQJLrS7EhtY8VPlO8pPvEQntK0mUQoHTBs1YYhTxKMj8ozRQLgWltsCoyR8leGo2f78XO6A3%7CnaHE900pqsIAxmeYCTEVcmyqrCMAipUgXn0ZSNU_dQIatPyWYwSY9Gxkw5dlrGZL7k9852C987B4DBvKKmRkjUGZLZAPlWlaLhUJDUn4dqlv2IRGGm6ncspQ5q63zkvo_km%7C0y7e9RZHr5mIFCdsvDE%7C9_mH2PsL1_s5bVQjq5vdlJPpK34YzzSNbNzOdm82Z%7CEBtt7ItwYaZ9%7CuTNonE9K19997PFgpzQxqhPwcWLNsHwqRd5cHZ0Gaa2QFW5wTmSYOSzeVwlEGPdkhM3bdPRgxrSQD7ShUWqreK4Sh2Farm9ONy_30HoGCfD8z7HIiP4ReFVShGh2%7Cr5zMorg35DqAsG3ovTeurYHVFrjCaZN7VeTcrsfX9heIysHtZCHJUCHKCgo8K%7Cp8jcRk9FeP0u6xuXjRUZEnv8G2oqpxrUA2fmf05YRsKrRkTaQoYTHtfBdo%7C5EGOdAC4n6HIgFLnGJUE6QUcEj1c6lCltyXWpvB7Ws86W7c9TCAwtBskI4sLDYCAFRhKJP67xoTbC4zueymnpOYBkZEoyXVyu%7CfNibAjsSggHdbZVd_sopQt_85qNDFBg2nT7d9Kuk5OhYGYbemoE3J-1dd5442d9872bd9d0d7cec7f9238250188662d41f07038494221535f&source_id=resy.com-venue-details
+
+
+
+Auth token:
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJleHAiOjE2OTYyMTczMTcsInVpZCI6MzY0NTA2NTIsImd0IjoiY29uc3VtZXIiLCJncyI6W10sImxhbmciOiJlbi11cyIsImV4dHJhIjp7Imd1ZXN0X2lkIjoxMjM0NDM3MjJ9fQ.AOF-LCJqoBmEjEfAuP1GjoZ6cfe9PzdZsP96X0g1rLaDTVAiulKJt2Qsso-fQiD5BKrj_hhKMlt7vwaa1Vx77pA-AOuRc5As0iYqQFdLhNMUjeTtFC6SwFtxslFiCYd5n4bdMJEc55_VgCY66fVvYMvgiD7jhhw2IsOuvhWCE7ZrJhMB
