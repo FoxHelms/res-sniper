@@ -1,4 +1,4 @@
-import controller as bot
+from .. import controller as bot
 
 def test_get_rest_correctly_converts_string():
     test_str = 'TESt wIth spACEs anD caPs'

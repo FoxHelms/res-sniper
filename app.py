@@ -34,7 +34,7 @@ def home():
     return render_template('index.html', venue_id=venue_id)
 
 
-def testdb():
+def cantestdb():
     try:
         db.session.query(text('1')).from_statement(text('SELECT 1')).all()
         return '<h1>It works.</h1>'

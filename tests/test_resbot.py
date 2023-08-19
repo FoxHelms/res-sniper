@@ -1,6 +1,6 @@
 import pytest
 import requests
-from resbot import BookingError, NoSlotsError, ResBot
+from ..resbot import BookingError, NoSlotsError, ResBot
 
 
 @pytest.fixture
