@@ -1,5 +1,5 @@
 import pytest
-from resbot import ResBot
+from resbot import NoSlotsError, ResBot
 
 
 @pytest.fixture
@@ -17,3 +17,18 @@ def test_get_venue_id_with_known_value(bot):
     '''the query 'shukette' should return 8579'''
     venue_id = bot.get_venue_id('shukette')
     assert venue_id == 8579
+
+def test_find_table_at_el_coco(bot):
+    '''el coco should return 38'''
+    day = '2023-08-21'
+    venue_id = '59705'
+    open_tables = bot.get_avail_times_for_date(day,venue_id)
+    assert len(open_tables) == 38
+
+
+def test_don_angie_raises_error(bot):
+    day = '2023-08-21'
+    venue_id = bot.get_venue_id('don-angie')
+    with pytest.raises(NoSlotsError):
+        open_tables = bot.get_avail_times_for_date(day,venue_id)
+

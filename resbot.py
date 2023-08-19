@@ -1,11 +1,12 @@
 from typing import List
 import requests as r
 import resy_config as rc
+import datetime
 
 '''
 I feel like I should split all these functions into different files. 
-All selenium stuff in one file
 '''
+class NoSlotsError(Exception): pass
 
 class ResBot():
     '''Spawn to click on buttons and input/submit data on webpage'''
@@ -41,7 +42,29 @@ class ResBot():
         resyID = dat['id']['resy']
         return resyID
     
+    def get_avail_times_for_date(self,res_date,venue_id): 
+        url_path = f'https://api.resy.com/4/find?lat=0&long=0&day={res_date}&party_size=2&venue_id={venue_id}'
+        response = r.get(url_path,headers=self.headers)
+        data = response.json()
+        results = data['results']
+        if len(results['venues'][0]['slots']) > 0:
+            open_slots = results['venues'][0]['slots']
+            available_times = [(k['date']['start']) for k in open_slots]
+            return available_times
+        else:
+            raise NoSlotsError('There are no open tables at that restaurant')
+        
+            '''
+                
+                closest_time = min(available_times, key=lambda x:abs(x[1]-table_time))[0]
+
+                best_table = [k for k in open_slots if k['date']['start'] == closest_time][0]
+
+                return best_table
+            '''
+    
     def find_table_at_rest(self, venue_id: int, day: int) -> List[str]:
+        '''find open table at restaurant'''
 
 
 
@@ -61,3 +84,5 @@ class ResBot():
         '''get lenght of the checklist, return int or None (or zero?)'''
     def go_to_link(self, resLink: str) -> None:
         '''Use selenium webdriver to visit the link'''
+
+
