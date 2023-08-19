@@ -55,7 +55,6 @@ class ResBot():
             raise NoSlotsError('There are no open tables at that restaurant')
         
             '''
-                
                 closest_time = min(available_times, key=lambda x:abs(x[1]-table_time))[0]
 
                 best_table = [k for k in open_slots if k['date']['start'] == closest_time][0]
