@@ -2,8 +2,10 @@ from typing import List
 import requests as r
 import resy_config as rc
 import datetime
+from restaurants import restaurants
 
 class NoSlotsError(Exception): pass
+class BookingError(Exception): pass
 
 class ResBot():
     '''Spawn to click on buttons and input/submit data on webpage'''
@@ -11,6 +13,7 @@ class ResBot():
         self.usr = rc.email
         self.pw = rc.pw
         self.headers = rc.headers
+        self.restaurants: List[int] = restaurants
         self.test_day = '2023-08-21'
         self.test_id = '59705'
 
@@ -52,19 +55,15 @@ class ResBot():
         else:
             raise NoSlotsError('There are no open tables at that restaurant')
 
-
-
-    def get_rest_dets_from_link(self, resLink: str) -> List[str]:
-        '''take link as input and return rest name, loc'''
-    def get_time_reservations_update(self, resLink: str) -> str:
-        '''
-        Scrape time reservation updates from website
-        Will this return a string or an int or some sort of datetime object?
-        '''
-    def add_rest_to_check_list(self, resLink: str) -> None:
+   
+    def add_rest_to_check_list(self, venue_id: int) -> None:
         '''Take link and add to list of places to check'''
-    def get_length_check_list(self, checkList: list) -> int:
+        self.restaurants.append(venue_id)
+
+    def size(self) -> int:
         '''get lenght of the checklist, return int or None (or zero?)'''
+        return len(self.restaurants)
+
     def create_config_id(self, open_slots: list) -> str:
         '''create config id token'''
         for slot in open_slots:
@@ -84,5 +83,19 @@ class ResBot():
         details = details_request.json()
         book_token = details['book_token']['value']
         return book_token
+    
+    def make_reservation(self, book_token: str) -> None:
+        '''take params and post reservation'''
+        self.headers['x-resy-auth-token'] = self.auth
+        data = {
+        'book_token': book_token,
+        'struct_payment_method': self.payment_id,
+        'source_id': 'resy.com-venue-details'
+        }
+
+        response = r.post('https://api.resy.com/3/book', headers=self.headers, data=data)
+        if response.status_code != 200 or 201 or 202:
+            raise BookingError('There was an error and no reservation was booked')
+        return response
 
 
