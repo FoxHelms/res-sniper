@@ -59,5 +59,3 @@ class ResBot():
         '''Take link and add to list of places to check'''
     def get_length_check_list(self, checkList: list) -> int:
         '''get lenght of the checklist, return int or None (or zero?)'''
-    def go_to_link(self, resLink: str) -> None:
-        '''Use selenium webdriver to visit the link'''
