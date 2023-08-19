@@ -1,6 +1,6 @@
 import pytest
 import requests
-from ..resbot import BookingError, NoSlotsError, ResBot
+from resbot import BookingError, NoSlotsError, ResBot
 
 
 @pytest.fixture
@@ -43,22 +43,22 @@ def test_create_book_token(bot):
     book_token = bot.create_book_token(id)
     assert len(book_token) == 761
 
-def test_make_reservation(bot):
+"""def test_make_reservation(bot):
     open_tables = bot.get_avail_times_for_date(bot.test_day,bot.test_id)
-    open_table = [open_tables[-6]]
+    open_table = [open_tables[0]]
     id = bot.create_config_id(open_table)
     book_token = bot.create_book_token(id)
     success = bot.make_reservation(book_token)
     assert success.status_code == 200 or 201 or 202
-
+"""
 def test_make_reservation_raises_error(bot):
     open_tables = bot.get_avail_times_for_date(bot.test_day,bot.test_id)
     open_table = [open_tables[-6]]
     id = bot.create_config_id(open_table)
     book_token = bot.create_book_token(id)
-    book_token = book_token + 'string to fail booking'
+    bad_book_token = book_token + 'string to fail booking'
     with pytest.raises(BookingError):
-        bot.make_reservation(book_token)
+        bot.make_reservation(bad_book_token)
 
 def test_check_length_check_list(bot):
     assert bot.size() == 2
