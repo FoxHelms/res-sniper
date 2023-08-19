@@ -3,9 +3,6 @@ import requests as r
 import resy_config as rc
 import datetime
 
-'''
-I feel like I should split all these functions into different files. 
-'''
 class NoSlotsError(Exception): pass
 
 class ResBot():
@@ -14,6 +11,8 @@ class ResBot():
         self.usr = rc.email
         self.pw = rc.pw
         self.headers = rc.headers
+        self.test_day = '2023-08-21'
+        self.test_id = '59705'
 
         def get_auth_token_and_payment_method_id() -> (str, str):
             '''get auth token and payment method from resy'''
@@ -42,31 +41,16 @@ class ResBot():
         resyID = dat['id']['resy']
         return resyID
     
-    def get_avail_times_for_date(self,res_date,venue_id): 
+    def get_avail_times_for_date(self, res_date: str, venue_id: int) -> List[str]: 
         url_path = f'https://api.resy.com/4/find?lat=0&long=0&day={res_date}&party_size=2&venue_id={venue_id}'
         response = r.get(url_path,headers=self.headers)
         data = response.json()
         results = data['results']
         if len(results['venues'][0]['slots']) > 0:
             open_slots = results['venues'][0]['slots']
-            available_times = [(k['date']['start']) for k in open_slots]
-            return available_times
+            return open_slots
         else:
             raise NoSlotsError('There are no open tables at that restaurant')
-        
-            '''
-                closest_time = min(available_times, key=lambda x:abs(x[1]-table_time))[0]
-
-                best_table = [k for k in open_slots if k['date']['start'] == closest_time][0]
-
-                return best_table
-            '''
-    
-    def find_table_at_rest(self, venue_id: int, day: int) -> List[str]:
-        '''find open table at restaurant'''
-
-
-
 
 
 
@@ -81,7 +65,24 @@ class ResBot():
         '''Take link and add to list of places to check'''
     def get_length_check_list(self, checkList: list) -> int:
         '''get lenght of the checklist, return int or None (or zero?)'''
-    def go_to_link(self, resLink: str) -> None:
-        '''Use selenium webdriver to visit the link'''
+    def create_config_id(self, open_slots: list) -> str:
+        '''create config id token'''
+        for slot in open_slots:
+            config_id = slot['config']['token']
+            return config_id
+        
+    def create_book_token(self, conf_id: str) -> str:
+        '''takes params and makes book token'''
+        params = (
+                    ('x-resy-auth-token', self.auth),
+                    ('config_id', conf_id),
+                    ('day', self.test_day),
+                    ('party_size', '2')
+                    )
+        
+        details_request = r.get('https://api.resy.com/3/details', headers=self.headers, params=params)
+        details = details_request.json()
+        book_token = details['book_token']['value']
+        return book_token
 
 
