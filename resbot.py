@@ -4,7 +4,6 @@ import resy_config as rc
 
 '''
 I feel like I should split all these functions into different files. 
-All selenium stuff in one file
 '''
 
 class ResBot():
