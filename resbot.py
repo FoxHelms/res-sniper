@@ -2,7 +2,7 @@ from typing import List
 import requests as r
 import resy_config as rc
 import datetime
-from restaurants import restaurants
+from manage_db import get_ids
 
 class NoSlotsError(Exception): pass
 class BookingError(Exception): pass
@@ -13,7 +13,7 @@ class ResBot():
         self.usr = rc.email
         self.pw = rc.pw
         self.headers = rc.headers
-        self.restaurants: List[int] = restaurants
+        self.restaurants: List[int] = get_ids()
         self.test_day = '2023-08-21'
         self.test_id = '59705'
 
@@ -54,7 +54,6 @@ class ResBot():
             return open_slots
         else:
             raise NoSlotsError('There are no open tables at that restaurant')
-
    
     def add_rest_to_check_list(self, venue_id: int) -> None:
         '''Take link and add to list of places to check'''
