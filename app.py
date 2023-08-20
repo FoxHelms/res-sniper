@@ -60,6 +60,17 @@ def home():
         restaurants = Restaurants.query.order_by(Restaurants.date_created).all()
         return render_template('index.html', restaurants=restaurants)
 
+@app.route('/delete/<int:id>')
+def delete(id):
+    rest_to_delete = Restaurants.query.get_or_404(id)
+
+    try:
+        db.session.delete(rest_to_delete)
+        db.session.commit()
+        return redirect('/')
+    except:
+        return 'There was a problem deleting your restaurant'
+
 
 def cantestdb():
     try:
