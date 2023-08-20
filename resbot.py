@@ -13,11 +13,11 @@ class ResBot():
         self.usr = rc.email
         self.pw = rc.pw
         self.headers = rc.headers
-        self.restaurants: List[int] = get_ids()
+        self.restaurants: List[int] = [] # get_ids()
         self.test_day = '2023-08-21'
         self.test_id = '59705'
 
-        def get_auth_token_and_payment_method_id() -> (str, str):
+        def get_auth_token_and_payment_method_id():
             '''get auth token and payment method from resy'''
             data = {
             'email': self.usr,
