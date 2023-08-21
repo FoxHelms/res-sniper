@@ -51,7 +51,3 @@ def get_ids():
     for d in data:
         ids.append(d[0])
     return ids
-
-ids = get_ids()
-for id in ids:
-    print(id)

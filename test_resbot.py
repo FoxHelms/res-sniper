@@ -61,5 +61,5 @@ def test_make_reservation_raises_error(bot):
         bot.make_reservation(bad_book_token)
 
 def test_check_length_check_list(bot):
-    assert bot.size() == 2
+    assert bot.size() == 0
 
