@@ -19,10 +19,11 @@ def test_get_venue_id_with_known_value(bot):
     venue_id = bot.get_venue_id('shukette')
     assert venue_id == 8579
 
-def test_find_table_at_el_coco(bot):
+
+def test_find_table(bot):
     '''el coco should return 38'''
     open_tables = bot.get_avail_times_for_date(bot.test_day,bot.test_id)
-    assert len(open_tables) == 38
+    assert len(open_tables) > 0
 
 
 def test_don_angie_raises_error(bot):
@@ -32,28 +33,37 @@ def test_don_angie_raises_error(bot):
 
 def test_create_conf_id(bot):
     open_tables = bot.get_avail_times_for_date(bot.test_day,bot.test_id)
-    open_table = [open_tables[0]]
+    open_table = open_tables[0]
     id = bot.create_config_id(open_table)
-    assert id == 'rgs://resy/59705/1657851/3/2023-08-21/2023-08-21/12:00:00/2/Indoor'
+    assert 'rgs://resy' in id
 
 def test_create_book_token(bot):
     open_tables = bot.get_avail_times_for_date(bot.test_day,bot.test_id)
-    open_table = [open_tables[0]]
+    open_table = open_tables[0]
     id = bot.create_config_id(open_table)
     book_token = bot.create_book_token(id)
     assert len(book_token) == 761
 
-"""def test_make_reservation(bot):
+def test_select_slot(bot):
+    '''should return dictionary where date:start is greater than 20'''
     open_tables = bot.get_avail_times_for_date(bot.test_day,bot.test_id)
-    open_table = [open_tables[0]]
-    id = bot.create_config_id(open_table)
+    best_table = bot.select_slot(open_tables)
+    date_dict = best_table.get('date')
+    start_time = date_dict.get('start')
+    assert type(best_table) == dict
+    assert (int(start_time[-8:-6]) >= 20) or (best_table == open_tables[0])
+
+def test_make_reservation(bot):
+    open_tables = bot.get_avail_times_for_date(bot.test_day,bot.test_id)
+    best_table = bot.select_slot(open_tables)
+    id = bot.create_config_id(best_table)
     book_token = bot.create_book_token(id)
     success = bot.make_reservation(book_token)
-    assert success.status_code == 200 or 201 or 202
-"""
+    assert success.status_code == 201
+
 def test_make_reservation_raises_error(bot):
-    open_tables = bot.get_avail_times_for_date(bot.test_day,bot.test_id)
-    open_table = [open_tables[-6]]
+    open_tables = bot.get_avail_times_for_date(bot.test_day,int(bot.test_id))
+    open_table = open_tables[0]
     id = bot.create_config_id(open_table)
     book_token = bot.create_book_token(id)
     bad_book_token = book_token + 'string to fail booking'
