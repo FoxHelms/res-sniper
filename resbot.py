@@ -1,3 +1,4 @@
+from tracemalloc import start
 from typing import List
 import requests as r
 import resy_config as rc
@@ -15,7 +16,7 @@ class ResBot():
         self.headers = rc.headers
         self.restaurants: List[int] = [] # get_ids()
         self.test_day = '2023-08-21'
-        self.test_id = '59705'
+        self.test_id = '8579' # '59679'
 
         def get_auth_token_and_payment_method_id():
             '''get auth token and payment method from resy'''
@@ -44,7 +45,7 @@ class ResBot():
         resyID = dat['id']['resy']
         return resyID
     
-    def get_avail_times_for_date(self, res_date: str, venue_id: int) -> List[str]: 
+    def get_avail_times_for_date(self, res_date: str, venue_id: int) -> List[dict]: 
         url_path = f'https://api.resy.com/4/find?lat=0&long=0&day={res_date}&party_size=2&venue_id={venue_id}'
         response = r.get(url_path,headers=self.headers)
         data = response.json()
@@ -54,6 +55,23 @@ class ResBot():
             return open_slots
         else:
             raise NoSlotsError('There are no open tables at that restaurant')
+
+    def select_slot(self, open_slots: List[dict]) -> dict:
+        '''Choose first slot OR first slot that starts after 8:00pm'''
+        # 'date': {'end': '2023-08-21 18:45:00', 'start': '2023-08-21 17:15:00'}
+        # next(x for x in the_iterable if x > 3)
+        best_slot = None
+        for slot in open_slots:
+            slot_date: dict = slot.get('date')
+            start_time: str = slot_date.get('start')[-8:-6]
+            start_time_int: int = int(start_time)
+            if start_time_int >= 20:
+                best_slot = slot
+                return best_slot
+        return open_slots[0]
+        
+
+
    
     def add_rest_to_check_list(self, venue_id: int) -> None:
         '''Take link and add to list of places to check'''
@@ -63,11 +81,12 @@ class ResBot():
         '''get lenght of the checklist, return int or None (or zero?)'''
         return len(self.restaurants)
 
-    def create_config_id(self, open_slots: list) -> str:
+    def create_config_id(self, open_slot: dict) -> str:
         '''create config id token'''
-        for slot in open_slots:
-            config_id = slot['config']['token']
-            return config_id
+        config_id = open_slot['config']['token']
+        # config_dict = open_slot.get('config')
+        # config_id = config_dict.get('token')
+        return config_id
         
     def create_book_token(self, conf_id: str) -> str:
         '''takes params and makes book token'''
@@ -93,8 +112,8 @@ class ResBot():
         }
 
         response = r.post('https://api.resy.com/3/book', headers=self.headers, data=data)
-        if response.status_code != 200 or 201 or 202:
-            raise BookingError('There was an error and no reservation was booked')
+        if response.status_code != 201:
+            raise BookingError(f'There was an error and no reservation was booked. Status code: {response.status_code}')
         return response
 
 
