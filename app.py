@@ -43,6 +43,7 @@ class Restaurants(db.Model):
     def __repr__(self):
         return '<Restaurant %r>' % self.id
 
+bot = resbot.ResBot()
 create_database()
 
 # bot = resbot.ResBot()
@@ -89,7 +90,6 @@ def cantestdb():
         return hed + error_text
 
 if __name__ == '__main__':
-    bot = resbot.ResBot()
     #mdb.create_table()
     app.run(debug=True)
     
