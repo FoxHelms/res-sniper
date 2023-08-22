@@ -15,7 +15,7 @@ class ResBot():
         self.pw = rc.pw
         self.headers = rc.headers
         self.restaurants: List[int] = [] # get_ids()
-        self.test_day = '2023-08-21'
+        self.test_day = '2023-08-22'
         self.test_id = '8579' # '59679'
 
         def get_auth_token_and_payment_method_id():

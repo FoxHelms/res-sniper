@@ -5,7 +5,7 @@ from sqlalchemy.sql import text
 import resbot
 from controller import get_rest_from_user as convertString
 from os import path
-
+import manage_db as mdb
 
 app = Flask(__name__)
 #app.register_blueprint(views,url_prefix='/')
@@ -25,7 +25,9 @@ db.init_app(app)
 
 def create_database():
     if not path.exists('instance/' + db_name):
-        db.create_all()
+        with app.app_context():
+            db.create_all()
+            db.session.commit()
         print('Created Database!')
 
 
@@ -35,13 +37,16 @@ class Restaurants(db.Model):
     restName = db.Column(db.String(200), nullable=False)
     venId = db.Column(db.Integer)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    # db.session.commit()
+    # db.session.close()
 
     def __repr__(self):
         return '<Restaurant %r>' % self.id
 
+bot = resbot.ResBot()
 create_database()
 
-bot = resbot.ResBot()
+# bot = resbot.ResBot()
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -50,9 +55,11 @@ def home():
         convStr = convertString(userRest)
         venue_id = bot.get_venue_id(convStr)
         new_rest = Restaurants(restName=userRest, venId=venue_id)
+        #mdb.write_to_db(userRest,venue_id)
         try:
             db.session.add(new_rest)
             db.session.commit()
+            # db.session.close()
             return redirect('/')
         except:
             return 'There was an issue adding your restaurant'
@@ -83,5 +90,7 @@ def cantestdb():
         return hed + error_text
 
 if __name__ == '__main__':
+    #mdb.create_table()
     app.run(debug=True)
+    
     
