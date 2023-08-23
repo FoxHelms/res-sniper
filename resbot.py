@@ -50,7 +50,7 @@ class ResBot():
         ('lat', '0'),
         ('long', '0')
         )
-        response = r.get(url_path, headers=self.headers, params=params)
+        response = r.get(url_path, headers=self.headers) #, params=params)
         dat = response.json()
         resyID = dat['id']['resy']
         return resyID
@@ -58,7 +58,9 @@ class ResBot():
     def get_avail_times_for_venue(self, venue_id: int) -> List[dict]: 
         url_path = f'https://api.resy.com/4/find?lat=0&long=0&day={self.date}&party_size=2&venue_id={venue_id}'
         response = r.get(url_path,headers=self.headers)
-        data = response.json()
+        response.raise_for_status()  # raises exception when not a 2xx response
+        if response.status_code != 204:
+            data = response.json()
         results = data['results']
         if len(results['venues'][0]['slots']) > 0:
             open_slots = results['venues'][0]['slots']

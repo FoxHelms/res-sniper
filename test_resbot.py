@@ -32,7 +32,7 @@ def test_don_angie_raises_error(bot):
         open_tables = bot.get_avail_times_for_venue(venue_id)
 
 def test_create_conf_id(bot):
-    open_tables = bot.get_avail_times_for_date(bot.test_id)
+    open_tables = bot.get_avail_times_for_venue(bot.test_id)
     open_table = open_tables[0]
     id = bot.create_config_id(open_table)
     assert 'rgs://resy' in id

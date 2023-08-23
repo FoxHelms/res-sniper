@@ -43,7 +43,7 @@ class Restaurants(db.Model):
     def __repr__(self):
         return '<Restaurant %r>' % self.id
 
-bot = resbot.ResBot()
+
 create_database()
 
 # bot = resbot.ResBot()
@@ -51,6 +51,7 @@ create_database()
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
+        bot = resbot.ResBot()
         userRest = request.form['userRest']
         convStr = convertString(userRest)
         venue_id = bot.get_venue_id(convStr)
