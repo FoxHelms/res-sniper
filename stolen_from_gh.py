@@ -81,7 +81,8 @@ def make_reservation(auth_token,config_id,res_date,party_size):
 	  'source_id': 'resy.com-venue-details'
 	}
 
-	response = requests.post('https://api.resy.com/3/book', headers=headers, data=data)
+	requests.post('https://api.resy.com/3/book', headers=headers, data=data)
+	
 
 
 def try_table(day,party_size,table_time,auth_token,restaurant):

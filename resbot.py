@@ -2,8 +2,11 @@ from tracemalloc import start
 from typing import List
 import requests as r
 import resy_config as rc
-import datetime
-from manage_db import get_ids
+import datetime as DT
+
+
+
+
 
 class NoSlotsError(Exception): pass
 class BookingError(Exception): pass
@@ -15,7 +18,10 @@ class ResBot():
         self.pw = rc.pw
         self.headers = rc.headers
         self.restaurants: List[int] = [] # get_ids()
-        self.test_day = '2023-08-22'
+        today = DT.date.today()
+        nextweek: DT.date = today + DT.timedelta(days=7)
+        self.date = nextweek.strftime('%Y-%m-%d')
+        #self.test_day = '2023-08-22'
         self.test_id = '8579' # '59679'
 
         def get_auth_token_and_payment_method_id():
@@ -26,11 +32,15 @@ class ResBot():
             }
 
             response = r.post('https://api.resy.com/3/auth/password', headers=self.headers, data=data)
-            res_data = response.json()
+            response.raise_for_status()  # raises exception when not a 2xx response
+            if response.status_code != 204:
+                res_data = response.json()
             auth_token = res_data['token']
             payment_method_string = '{"id":' + str(res_data['payment_method_id']) + '}'
             return auth_token,payment_method_string
         self.auth, self.payment_id = get_auth_token_and_payment_method_id()
+        self.headers['x-resy-auth-token'] = self.auth
+        self.headers['x-resy-universal-auth'] = self.auth
 
     def get_venue_id(self, resQuery: str) -> int:
         '''return resy venue ID based on query'''
@@ -45,8 +55,8 @@ class ResBot():
         resyID = dat['id']['resy']
         return resyID
     
-    def get_avail_times_for_date(self, res_date: str, venue_id: int) -> List[dict]: 
-        url_path = f'https://api.resy.com/4/find?lat=0&long=0&day={res_date}&party_size=2&venue_id={venue_id}'
+    def get_avail_times_for_venue(self, venue_id: int) -> List[dict]: 
+        url_path = f'https://api.resy.com/4/find?lat=0&long=0&day={self.date}&party_size=2&venue_id={venue_id}'
         response = r.get(url_path,headers=self.headers)
         data = response.json()
         results = data['results']
@@ -69,17 +79,6 @@ class ResBot():
                 best_slot = slot
                 return best_slot
         return open_slots[0]
-        
-
-
-   
-    def add_rest_to_check_list(self, venue_id: int) -> None:
-        '''Take link and add to list of places to check'''
-        self.restaurants.append(venue_id)
-
-    def size(self) -> int:
-        '''get lenght of the checklist, return int or None (or zero?)'''
-        return len(self.restaurants)
 
     def create_config_id(self, open_slot: dict) -> str:
         '''create config id token'''
@@ -93,7 +92,7 @@ class ResBot():
         params = (
                     ('x-resy-auth-token', self.auth),
                     ('config_id', conf_id),
-                    ('day', self.test_day),
+                    ('day', self.date),
                     ('party_size', '2')
                     )
         
@@ -103,8 +102,8 @@ class ResBot():
         return book_token
     
     def make_reservation(self, book_token: str) -> None:
-        '''take params and post reservation'''
-        self.headers['x-resy-auth-token'] = self.auth
+        # take params and post reservation
+        # self.headers['x-resy-auth-token'] = self.auth
         data = {
         'book_token': book_token,
         'struct_payment_method': self.payment_id,
@@ -112,8 +111,40 @@ class ResBot():
         }
 
         response = r.post('https://api.resy.com/3/book', headers=self.headers, data=data)
+        response_sc = response.status_code
+        response.close()
         if response.status_code != 201:
             raise BookingError(f'There was an error and no reservation was booked. Status code: {response.status_code}')
-        return response
+        
+        return response_sc
+    '''
+
+    def make_reservation(self,config_id):
+        
+        params = (
+            ('x-resy-auth-token', self.auth),
+            ('config_id', config_id),
+            ('day', self.date),
+            ('party_size', '2'),
+        )
+        details_request = r.get('https://api.resy.com/3/details', headers=self.headers, params=params)
+        details = details_request.json()
+        book_token = details['book_token']['value']
+        data = {
+            'book_token': book_token,
+            'struct_payment_method': self.payment_id,
+            'source_id': 'resy.com-venue-details'
+        }
+        response = r.post('https://api.resy.com/3/book', headers=self.headers, data=data)
+        response.close()
+    '''
+
+    def close_session(self) -> None:
+        '''Explicitly close session'''
+        data = {
+        'struct_payment_method': self.payment_id,
+        'source_id': 'resy.com-venue-details'
+        }
+        closeSes = r.post(url='https://api.resy.com/3/book', data=data, headers={'Connection':'close'})
 
 
