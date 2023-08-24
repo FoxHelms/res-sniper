@@ -19,6 +19,21 @@ def test_get_venue_id_with_known_value(bot):
     venue_id = bot.get_venue_id('shukette')
     assert venue_id == 8579
 
+def test_adjust_date_by_week(bot):
+    '''check that the date is properly adjusted by a week'''
+    today = bot.date
+    next_week = bot.adjust_date()
+    if int(today[-2:]) <= 21:
+        assert int(next_week[-2:]) == (int(today[-2:]) + 7)
+
+def test_adjust_date_by_day(bot):
+    '''check that the date is properly adjusted by a day'''
+    today = bot.date
+    bot.time_delta = 1
+    tomorrow = bot.adjust_date()
+    if int(today[-2:]) <= 27:
+        assert int(tomorrow[-2:]) == (int(today[-2:]) + 1)
+
 
 def test_find_table(bot):
     '''el coco should return 38'''
