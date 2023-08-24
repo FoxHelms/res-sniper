@@ -1,7 +1,9 @@
 # To Do - Prioritized
 
-- [] Add feature to prioritize rest list. 
+- [] See if changing data=data to json=data fixed the 400 error when testing
+- [] learn how to add proxies to requests
 - [] Add feature to increment day whenever there's a successful reservation. 
+- [] Add feature to prioritize rest list. 
 
 
 

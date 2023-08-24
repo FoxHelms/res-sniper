@@ -1,5 +1,5 @@
-email = 'r6174126@gmail.com'
-pw = '7uEWA%r34#z5'
+email = 'foxhelms@gmail.com'
+pw = '_9mKxuSu2Wr8&Vx'
 
 '''
 

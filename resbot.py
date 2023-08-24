@@ -17,12 +17,17 @@ class ResBot():
         self.usr = rc.email
         self.pw = rc.pw
         self.headers = rc.headers
-        self.restaurants: List[int] = [] # get_ids()
-        today = DT.date.today()
-        nextweek: DT.date = today + DT.timedelta(days=7)
-        self.date = nextweek.strftime('%Y-%m-%d')
-        #self.test_day = '2023-08-22'
-        self.test_id = '8579' # '59679'
+        self.booked_dates: List[str] = [] # get_ids()
+        self.time_delta = 7
+        self.test_id = '59679' # '8579'
+
+        def create_date():
+            '''create date '''
+            today = DT.date.today()
+            nextweek: DT.date = today + DT.timedelta(days=self.time_delta)
+            return nextweek.strftime('%Y-%m-%d') # '2023-08-22'
+
+        self.date = create_date()
 
         def get_auth_token_and_payment_method_id():
             '''get auth token and payment method from resy'''
@@ -42,6 +47,12 @@ class ResBot():
         self.headers['x-resy-auth-token'] = self.auth
         self.headers['x-resy-universal-auth'] = self.auth
 
+    def adjust_date(self):
+            '''create date '''
+            today = DT.date.today()
+            nextweek: DT.date = today + DT.timedelta(days=self.time_delta)
+            return nextweek.strftime('%Y-%m-%d') # '2023-08-22'
+
     def get_venue_id(self, resQuery: str) -> int:
         '''return resy venue ID based on query'''
         url_path = f'https://api.resy.com/3/venue?url_slug={resQuery}&location=ny'
@@ -56,6 +67,14 @@ class ResBot():
         return resyID
     
     def get_avail_times_for_venue(self, venue_id: int) -> List[dict]: 
+        if len(self.booked_dates) == 1:
+            self.time_delta += 7
+            self.date = self.adjust_date()
+            print('Entered len = 1 loop')
+        if len(self.booked_dates) > 1:
+            self.time_delta += 1
+            self.date = self.adjust_date()
+            print('Entered len > 1 loop')
         url_path = f'https://api.resy.com/4/find?lat=0&long=0&day={self.date}&party_size=2&venue_id={venue_id}'
         response = r.get(url_path,headers=self.headers)
         response.raise_for_status()  # raises exception when not a 2xx response
@@ -102,6 +121,10 @@ class ResBot():
         details = details_request.json()
         book_token = details['book_token']['value']
         return book_token
+
+    def keep_track_of_booked_dates(self) -> None:
+        '''Adds booked to list'''
+        self.booked_dates.append(self.date)
     
     def make_reservation(self, book_token: str) -> None:
         # take params and post reservation
@@ -117,7 +140,7 @@ class ResBot():
         response.close()
         if response.status_code != 201:
             raise BookingError(f'There was an error and no reservation was booked. Status code: {response.status_code}')
-        
+        self.keep_track_of_booked_dates()
         return response_sc
     '''
 
