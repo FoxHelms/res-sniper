@@ -12,16 +12,13 @@
     <h4>There are no restaurants!</h4>
     {% else %}
 
-    <table>
+    <table id='restaurants'>
         <tr>
-            <th>Restaurant Name</th>
-            <th>Venue ID</th>
-            <th>Actions</th>
+            <th>Restaurant List</th>
         </tr>
         {% for restaurant in restaurants %}
             <tr>
                 <td>{{ restaurant.restName }}</td>
-                <td>{{ restaurant.venId }}</td>
                 <td>
                     <a href="/delete/{{restaurant.id}}">Delete</a>
                 </td>
@@ -31,8 +28,8 @@
     {% endif %}
 
     <form action="/" method="POST">
-        <input type="text" name="userRest" id="userRest">
-        <input type="submit" value="Enter Name of Restaurant">
+        <input type="text" name="userRest" id="userRest" placeholder="Enter Name of Restaurant" autocomplete="off">
+        <input type="submit" value="Click">
     </form>
 </div>
 {% endblock %}

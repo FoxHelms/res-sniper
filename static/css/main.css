@@ -1,0 +1,95 @@
+body {
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
+a {
+    border: 1px whitesmoke;
+    border-style: solid;
+    color: white;
+    padding: 0.5em 0.75em;
+    position: relative;
+    text-decoration: none;
+    text-transform: lowercase;
+    border-radius: 10%;
+    font-size: 18px;
+}
+  
+a:hover {
+    background-color:#181f26;
+    box-shadow: 0.5px 0.5px 0.5px white;
+    cursor: pointer;
+}
+  
+a:active {
+    box-shadow: none;
+    top: 5px;
+}
+
+h1 {
+    font-size: 48px;
+    padding-top: 5%;
+}
+
+form {
+    padding-top: 4%;
+    border: none;
+}
+
+input[type=text] {
+    background: transparent;
+    border: none;
+    width: 30%;
+    padding: 0.5em 1em;
+    border-bottom:2px solid #ccc;
+    color: whitesmoke;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+
+input[type=submit] {
+    border: 1px whitesmoke;
+    color: white;
+    border-style: solid;
+    background-color: transparent;
+    padding: 0.5em 0.75em;
+    text-decoration: none;
+    text-transform: lowercase;
+    border-radius: 10%;
+    font-size: 18px;
+}
+
+input[type=submit]:hover {
+    background-color:#181f26;
+    box-shadow: 0.5px 0.5px 0.5px white;
+    cursor: pointer;
+}
+
+
+#restaurants {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+  
+#restaurants td {
+    padding: 12px;
+    font-size: 24px;
+}
+  
+#restaurants th {
+    padding-top: 18px;
+    padding-bottom: 18px;
+    column-span: all;
+    text-align: center;
+    font-size: 24px;
+    color: white;
+}

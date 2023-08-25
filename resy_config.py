@@ -3,6 +3,12 @@ pw = '_9mKxuSu2Wr8&Vx'
 
 '''
 
+test_email = 'r6174126@gmail.com'
+test_password = '7uEWA%r34#z5'
+
+email = 'foxhelms@gmail.com'
+pw = '_9mKxuSu2Wr8&Vx'
+
 headers = {
             'origin': 'https://resy.com',
             'accept-encoding': 'gzip, deflate, br',
@@ -34,5 +40,6 @@ headers = {
     'Sec-Fetch-Dest': 'empty',
     'Sec-Fetch-Mode': 'cors',
     'Sec-Fetch-Site': 'same-site',
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+    'x-origin': 'https://resy.com'
 }
