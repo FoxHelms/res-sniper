@@ -43,12 +43,13 @@ class ResBot():
             auth_token = res_data['token']
             payment_method_string = '{"id":' + str(res_data['payment_method_id']) + '}'
             return auth_token,payment_method_string
+        
         self.auth, self.payment_id = get_auth_token_and_payment_method_id()
         self.headers['x-resy-auth-token'] = self.auth
         self.headers['x-resy-universal-auth'] = self.auth
 
     def adjust_date(self):
-            '''create date '''
+            '''adjust date '''
             today = DT.date.today()
             nextweek: DT.date = today + DT.timedelta(days=7)
             adjusted_date: DT.date = nextweek + DT.timedelta(days=self.time_delta)
@@ -82,7 +83,7 @@ class ResBot():
         if response.status_code != 204:
             data = response.json()
         results = data['results']
-        if len(results['venues'][0]['slots']) > 0:
+        if results['venues'][0]['slots']:
             open_slots = results['venues'][0]['slots']
             return open_slots
         else:
@@ -143,34 +144,3 @@ class ResBot():
             raise BookingError(f'There was an error and no reservation was booked. Status code: {response.status_code}')
         self.keep_track_of_booked_dates()
         return response_sc
-    '''
-
-    def make_reservation(self,config_id):
-        
-        params = (
-            ('x-resy-auth-token', self.auth),
-            ('config_id', config_id),
-            ('day', self.date),
-            ('party_size', '2'),
-        )
-        details_request = r.get('https://api.resy.com/3/details', headers=self.headers, params=params)
-        details = details_request.json()
-        book_token = details['book_token']['value']
-        data = {
-            'book_token': book_token,
-            'struct_payment_method': self.payment_id,
-            'source_id': 'resy.com-venue-details'
-        }
-        response = r.post('https://api.resy.com/3/book', headers=self.headers, data=data)
-        response.close()
-    '''
-
-    def close_session(self) -> None:
-        '''Explicitly close session'''
-        data = {
-        'struct_payment_method': self.payment_id,
-        'source_id': 'resy.com-venue-details'
-        }
-        closeSes = r.post(url='https://api.resy.com/3/book', data=data, headers={'Connection':'close'})
-
-
