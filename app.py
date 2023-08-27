@@ -1,11 +1,13 @@
+import requests as r
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.sql import text
 import resbot
 from controller import get_rest_from_user as convertString
+from logincred import login_data
 from os import path
-import manage_db as mdb
+
 
 app = Flask(__name__)
 #app.register_blueprint(views,url_prefix='/')
@@ -16,6 +18,7 @@ db = SQLAlchemy()
 db_name = 'restaurants.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_name
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SECRET_KEY'] = 'thisisasecretkey'
 #  Add this to work within application context
 app.app_context().push()
 db.init_app(app)
@@ -28,7 +31,23 @@ def create_database():
         with app.app_context():
             db.create_all()
             db.session.commit()
-        print('Created Database!')
+        print('Created Databases!')
+
+def tryLogin(data):
+    hdrs = {
+    'Authorization': 'ResyAPI api_key="VbWk7s3L4KiK5fzlO7JD3Q5EYolJI7n5"',
+    'Origin': 'https://resy.com',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+    }
+
+
+
+
+    post_path = 'https://api.resy.com/3/auth/password'
+
+    return r.post(post_path, headers=hdrs, data=data)
+
+
 
 
 
@@ -44,12 +63,13 @@ class Restaurants(db.Model):
         return '<Restaurant %r>' % self.id
 
 
+
+
 create_database()
 
-# bot = resbot.ResBot()
 
-@app.route('/', methods=['GET', 'POST'])
-def home():
+@app.route('/list', methods=['GET', 'POST'])
+def list():
     if request.method == 'POST':
         bot = resbot.ResBot()
         userRest = request.form['userRest']
@@ -67,6 +87,27 @@ def home():
     else:
         restaurants = Restaurants.query.order_by(Restaurants.date_created).all()
         return render_template('index.html', restaurants=restaurants)
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        # bot = resbot.ResBot()
+        ResyEmail = request.form['ResyEmail']
+        ResyPW = request.form['ResyPW']
+        data = {'email': ResyEmail, 'password': ResyPW}
+        result = tryLogin(data)
+        if result.status_code != 200:
+            return f'Please login using your Resy credentials: {result.status_code}'
+        else:
+            with open('logincred.py', 'w') as lic:
+                creds_to_write = 'login_data = {"email" : ' + '"' + str(ResyEmail) + '"' + ', "password" :  ' + '"' + str(ResyPW) + '"' + '}'
+                lic.write(creds_to_write)
+                lic.close()
+                return redirect('/list')
+            
+    else:
+        return render_template('login.html')
+
 
 @app.route('/delete/<int:id>')
 def delete(id):
