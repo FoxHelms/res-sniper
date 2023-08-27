@@ -49,11 +49,15 @@ class ResBot():
         self.headers['x-resy-universal-auth'] = self.auth
 
     def adjust_date(self):
-            '''adjust date '''
-            today = DT.date.today()
-            nextweek: DT.date = today + DT.timedelta(days=7)
-            adjusted_date: DT.date = nextweek + DT.timedelta(days=self.time_delta)
-            return adjusted_date.strftime('%Y-%m-%d') # '2023-08-22'
+        '''adjust date '''
+        today = DT.date.today()
+        nextweek: DT.date = today + DT.timedelta(days=7)
+        adjusted_date: DT.date = nextweek + DT.timedelta(days=self.time_delta)
+        return adjusted_date.strftime('%Y-%m-%d') # '2023-08-22'
+
+    def req_post(self):
+        '''wrapper for request post method, catches some exceptions'''
+
 
     def get_venue_id(self, resQuery: str) -> int:
         '''return resy venue ID based on query'''
