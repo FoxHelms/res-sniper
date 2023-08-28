@@ -6,3 +6,5 @@ def test_get_rest_correctly_converts_string():
     goal_string = 'test-with-spaces-and-caps'
     assert converted == goal_string
 
+
+
