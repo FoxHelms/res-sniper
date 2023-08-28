@@ -36,6 +36,8 @@ class ResBot():
             'password': self.pw
             }
 
+            
+
             response = r.post('https://api.resy.com/3/auth/password', headers=self.headers, data=data)
             response.raise_for_status()  # raises exception when not a 2xx response
             if response.status_code != 204:

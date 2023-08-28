@@ -1,5 +1,7 @@
-email = 'foxhelms@gmail.com'
-pw = '_9mKxuSu2Wr8&Vx'
+from logincred import login_data
+
+email = login_data.get('email')
+pw = login_data.get('password')
 
 '''
 
