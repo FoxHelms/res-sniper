@@ -1,7 +1,8 @@
 from logincred import login_data
+from cryptic import *
 
-email = login_data.get('email')
-pw = login_data.get('password')
+email = decrypt_message(login_data.get('email'))
+pw = decrypt_message(login_data.get('password'))
 
 '''
 

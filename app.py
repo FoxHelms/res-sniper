@@ -7,8 +7,7 @@ from resbot import get_venue_id
 from controller import get_rest_from_user as convertString
 from logincred import login_data
 from os import path
-from time import sleep
-
+from cryptic import *
 
 app = Flask(__name__)
 #app.register_blueprint(views,url_prefix='/')
@@ -103,7 +102,9 @@ def login():
             return f'Please login using your Resy credentials: {result.status_code}'
         else:
             with open('logincred.py', 'w') as lic:
-                creds_to_write = 'login_data = {"email" : ' + '"' + str(ResyEmail) + '"' + ', "password" :  ' + '"' + str(ResyPW) + '"' + '}'
+                enc_user = encrypt_message(ResyEmail)
+                enc_pw = encrypt_message(ResyPW)
+                creds_to_write = 'login_data = {"email" : ' + '"' + enc_user + '"' + ', "password" :  ' + '"' + enc_pw + '"' + '}'
                 lic.write(creds_to_write)
                 lic.close()
             return redirect('/')

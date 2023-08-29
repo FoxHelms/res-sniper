@@ -1,5 +1,7 @@
 # To Do - Prioritized
 
+
+
 - [ ] Run Docker in project folder
 
 
@@ -12,6 +14,7 @@
 
 ### Done
 
+- [X] Add en/decryption to resbot, resy config, app.py
 - [X] Update main reservation folder so that it only tries one time on list (first index or first index at 8pm)
 - [X] Write daily function that iterates through database and makes reservations. 
 - [X] Add feature to increment day whenever there's a successful reservation. 

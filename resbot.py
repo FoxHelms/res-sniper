@@ -2,12 +2,8 @@ from typing import List
 import requests as r
 import resy_config as rc
 import datetime as DT
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
+from cryptic import *
 from controller import adjust_date
-
-
-
 
 class NoSlotsError(Exception): pass
 class BookingError(Exception): pass
