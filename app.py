@@ -3,7 +3,7 @@ from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.sql import text
-import resbot
+from resbot import get_venue_id
 from controller import get_rest_from_user as convertString
 from logincred import login_data
 from os import path
@@ -74,10 +74,10 @@ def home():
     if not login_data:
        return redirect('/login')
     if request.method == 'POST':
-        bot = resbot.ResBot()
+        # bot = resbot.ResBot()
         userRest = request.form['userRest']
         convStr = convertString(userRest)
-        venue_id = bot.get_venue_id(convStr)
+        venue_id = get_venue_id(convStr)
         new_rest = Restaurants(restName=userRest, venId=venue_id)
         #mdb.write_to_db(userRest,venue_id)
         try:

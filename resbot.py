@@ -13,6 +13,21 @@ from controller import adjust_date
 class NoSlotsError(Exception): pass
 class BookingError(Exception): pass
 
+
+def get_venue_id(resQuery: str) -> int:
+        '''return resy venue ID based on query'''
+        url_path = f'https://api.resy.com/3/venue?url_slug={resQuery}&location=ny'
+        hdrs = {
+            'Authorization': 'ResyAPI api_key="VbWk7s3L4KiK5fzlO7JD3Q5EYolJI7n5"',
+            'Origin': 'https://resy.com',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+        }
+        response = r.get(url_path, headers=hdrs)
+        dat = response.json()
+        resyID = dat['id']['resy']
+        return resyID
+
+
 class ResBot():
     '''Spawn to click on buttons and input/submit data on webpage'''
     def __init__(self) -> None:
@@ -37,7 +52,7 @@ class ResBot():
         
         self.date = create_date()
 
-        
+        '''
         self.s = r.Session()
 
         retry = Retry(connect=3, backoff_factor=0.5)
@@ -52,7 +67,7 @@ class ResBot():
         }
 
         self.s.cookies.clear()
-        
+        '''
 
 
         def get_auth_token_and_payment_method_id():
@@ -66,7 +81,7 @@ class ResBot():
 
             
 
-            response = self.s.post('https://api.resy.com/3/auth/password', data=data, verify=False)
+            response = r.post('https://api.resy.com/3/auth/password', data=data)
             response.raise_for_status()  # raises exception when not a 2xx response
             if response.status_code != 204:
                 res_data = response.json()
@@ -85,12 +100,12 @@ class ResBot():
     def get_venue_id(self, resQuery: str) -> int:
         '''return resy venue ID based on query'''
         url_path = f'https://api.resy.com/3/venue?url_slug={resQuery}&location=ny'
-        params = (
-        ('x-resy-auth-token',  self.auth),
-        ('lat', '0'),
-        ('long', '0')
-        )
-        response = self.s.get(url_path, headers=self.headers) #, params=params)
+        hdrs = {
+            'Authorization': 'ResyAPI api_key="VbWk7s3L4KiK5fzlO7JD3Q5EYolJI7n5"',
+            'Origin': 'https://resy.com',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+        }
+        response = r.get(url_path, headers=hdrs)
         dat = response.json()
         resyID = dat['id']['resy']
         return resyID
@@ -105,7 +120,7 @@ class ResBot():
             self.date = adjust_date()
             print('Entered len > 1 loop')
         url_path = f'https://api.resy.com/4/find?lat=0&long=0&day={self.date}&party_size=2&venue_id={venue_id}'
-        response = self.s.get(url_path,headers=self.headers)
+        response = r.get(url_path,headers=self.headers)
         response.raise_for_status()  # raises exception when not a 2xx response
         if response.status_code != 204:
             data = response.json()
@@ -146,7 +161,7 @@ class ResBot():
                     ('party_size', '2')
                     )
         
-        details_request = self.s.get('https://api.resy.com/3/details', headers=self.headers, params=params)
+        details_request = r.get('https://api.resy.com/3/details', headers=self.headers, params=params)
         details = details_request.json()
         book_token = details['book_token']['value']
         return book_token
@@ -164,7 +179,7 @@ class ResBot():
         'source_id': 'resy.com-venue-details'
         }
 
-        response = self.s.post('https://api.resy.com/3/book', headers=self.headers, data=data)
+        response = r.post('https://api.resy.com/3/book', headers=self.headers, data=data)
         response_sc = response.status_code
         response.close()
         if response.status_code != 201:

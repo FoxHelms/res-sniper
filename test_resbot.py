@@ -1,6 +1,6 @@
 import pytest
 import requests
-from resbot import BookingError, NoSlotsError, ResBot
+from resbot import BookingError, NoSlotsError, ResBot, get_venue_id
 
 
 @pytest.fixture
@@ -14,9 +14,9 @@ def test_get_auth_token(bot):
     tokenGen = bot.auth
     assert tokenGen[:36] == tokenStr[:36]
 
-def test_get_venue_id_with_known_value(bot):
+def test_get_venue_id_with_known_value():
     '''the query 'shukette' should return 8579'''
-    venue_id = bot.get_venue_id('shukette')
+    venue_id = get_venue_id('shukette')
     assert venue_id == 8579
 
 def t_test_adjust_date_by_week(bot):
