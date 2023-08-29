@@ -7,6 +7,7 @@ import resbot
 from controller import get_rest_from_user as convertString
 from logincred import login_data
 from os import path
+from time import sleep
 
 
 app = Flask(__name__)
@@ -68,8 +69,10 @@ class Restaurants(db.Model):
 create_database()
 
 
-@app.route('/list', methods=['GET', 'POST'])
-def list():
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if not login_data:
+       return redirect('/login')
     if request.method == 'POST':
         bot = resbot.ResBot()
         userRest = request.form['userRest']
@@ -88,8 +91,8 @@ def list():
         restaurants = Restaurants.query.order_by(Restaurants.date_created).all()
         return render_template('index.html', restaurants=restaurants)
 
-@app.route('/', methods=['GET', 'POST'])
-def home():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     if request.method == 'POST':
         # bot = resbot.ResBot()
         ResyEmail = request.form['ResyEmail']
@@ -103,8 +106,7 @@ def home():
                 creds_to_write = 'login_data = {"email" : ' + '"' + str(ResyEmail) + '"' + ', "password" :  ' + '"' + str(ResyPW) + '"' + '}'
                 lic.write(creds_to_write)
                 lic.close()
-                return redirect('/list')
-            
+            return redirect('/')
     else:
         return render_template('login.html')
 

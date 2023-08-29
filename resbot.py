@@ -47,8 +47,8 @@ class ResBot():
         self.s.headers.update(hdrs)
 
         self.s.proxies = {
-        'https': 'http://144.49.99.190:8080',
-        'https': 'http://144.49.99.190:8080',
+        'https': 'http://144.49.99.169:8080',
+        'https': 'http://144.49.99.169:8080',
         }
 
         self.s.cookies.clear()
