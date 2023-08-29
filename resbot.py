@@ -1,4 +1,3 @@
-from tracemalloc import start
 from typing import List
 import requests as r
 import resy_config as rc
@@ -76,12 +75,7 @@ class ResBot():
             'email': self.usr,
             'password': self.pw
             }
-
-            
-
-            
-
-            response = r.post('https://api.resy.com/3/auth/password', data=data)
+            response = r.post('https://api.resy.com/3/auth/password', headers=hdrs, data=data)
             response.raise_for_status()  # raises exception when not a 2xx response
             if response.status_code != 204:
                 res_data = response.json()
@@ -113,11 +107,11 @@ class ResBot():
     def get_avail_times_for_venue(self, venue_id: int) -> List[dict]: 
         if len(self.booked_dates) == 1:
             self.time_delta += 7
-            self.date = adjust_date()
+            self.date = adjust_date(self.time_delta)
             print('Entered len = 1 loop')
         if len(self.booked_dates) > 1:
             self.time_delta += 1
-            self.date = adjust_date()
+            self.date = adjust_date(self.time_delta)
             print('Entered len > 1 loop')
         url_path = f'https://api.resy.com/4/find?lat=0&long=0&day={self.date}&party_size=2&venue_id={venue_id}'
         response = r.get(url_path,headers=self.headers)
