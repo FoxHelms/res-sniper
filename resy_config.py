@@ -1,5 +1,8 @@
-email = 'foxhelms@gmail.com'
-pw = '_9mKxuSu2Wr8&Vx'
+from logincred import login_data
+from cryptic import *
+
+email = decrypt_message(login_data.get('email'))
+pw = decrypt_message(login_data.get('password'))
 
 '''
 
@@ -40,6 +43,6 @@ headers = {
     'Sec-Fetch-Dest': 'empty',
     'Sec-Fetch-Mode': 'cors',
     'Sec-Fetch-Site': 'same-site',
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
     'x-origin': 'https://resy.com'
 }

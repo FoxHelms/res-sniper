@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Login</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Login Page</h1>
+
+    <h3>
+        Please login with your Resy credentials
+    </h3>
+
+    <form method="POST">
+        <input type="text" name="ResyEmail" id="ResyEmail" placeholder="Resy Email" autocomplete="off">
+        <input type="text" name="ResyPW" id="ResyPW" placeholder="Resy Password" autocomplete="off">
+        <input type="submit" value="&#43;">
+    </form>
+
+</div>
+{% endblock %}

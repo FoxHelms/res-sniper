@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Errors</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Whoops! There was a mistake</h1>
+
+    <h3>
+        {{ message }}
+        <br>
+        <br>
+        Error Code: {{ e_code }}
+        <br>
+        <br>
+    </h3>
+
+    <a href="/">Try Again</a>
+</div>
+{% endblock %}

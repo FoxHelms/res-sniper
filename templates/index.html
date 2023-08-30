@@ -8,19 +8,22 @@
 <div class="content">
     <h1>Reservation Sniper</h1>
 
+    <h3>
+        This app will make you a resy reservation at the restaurants on your list
+        <br>
+        Best used for spots where reservations fill up quickly!
+    </h3>
+
     {% if restaurants|length < 1 %}
     <h4>There are no restaurants!</h4>
     {% else %}
 
     <table id='restaurants'>
-        <tr>
-            <th>Restaurant List</th>
-        </tr>
         {% for restaurant in restaurants %}
             <tr>
                 <td>{{ restaurant.restName }}</td>
                 <td>
-                    <a href="/delete/{{restaurant.id}}">Delete</a>
+                    <a href="/delete/{{restaurant.id}}">&#8722;</a>
                 </td>
             </tr>
         {% endfor %}
@@ -29,7 +32,7 @@
 
     <form action="/" method="POST">
         <input type="text" name="userRest" id="userRest" placeholder="Enter Name of Restaurant" autocomplete="off">
-        <input type="submit" value="Click">
+        <input type="submit" value="&#43;">
     </form>
 </div>
 {% endblock %}
