@@ -3,7 +3,7 @@ from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.sql import text
-from resbot import get_venue_id
+from find_venue_id import get_venue_id
 from controller import get_rest_from_user as convertString
 from logincred import login_data
 from os import path
@@ -99,12 +99,12 @@ def login():
         data = {'email': ResyEmail, 'password': ResyPW}
         result = tryLogin(data)
         if result.status_code != 200:
-            return f'Please login using your Resy credentials: {result.status_code}'
+            return render_template('error.html', message='Please login using your Resy credentials', e_code=result.status_code)
         else:
             with open('logincred.py', 'w') as lic:
                 enc_user = encrypt_message(ResyEmail)
                 enc_pw = encrypt_message(ResyPW)
-                creds_to_write = 'login_data = {"email" : ' + '"' + enc_user + '"' + ', "password" :  ' + '"' + enc_pw + '"' + '}'
+                creds_to_write = 'login_data = {"email" : ' + '"' + str(enc_user) + '"' + ', "password" :  ' + '"' + str(enc_pw) + '"' + '}'
                 lic.write(creds_to_write)
                 lic.close()
             return redirect('/')
@@ -121,7 +121,16 @@ def delete(id):
         db.session.commit()
         return redirect('/')
     except:
-        return 'There was a problem deleting your restaurant'
+        return render_template('error.html', message='There was a problem deleting your restaurant', e_code='Please Try Again')
+
+
+@app.route('/error', methods=['GET','POST'])
+def error(message, e_code):
+    if request.method == 'POST':
+        return redirect('/')
+    else:
+        return render_template('errors.html', message=message, e_code=e_code)
+
 
 
 def cantestdb():

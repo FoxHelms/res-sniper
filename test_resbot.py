@@ -1,7 +1,7 @@
 import pytest
 import requests
-from resbot import BookingError, NoSlotsError, ResBot, get_venue_id
-
+from resbot import BookingError, NoSlotsError, ResBot
+from find_venue_id import get_venue_id
 
 @pytest.fixture
 def bot():
