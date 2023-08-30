@@ -20,7 +20,7 @@ class ResBot():
         self.headers = rc.headers
         self.booked_dates: List[str] = [] # get_ids()
         self.time_delta = 7
-        self.test_id = '59679' # '8579'
+        self.test_id = '59679' # '59679' = el coco '8579' = shukette
 
         def create_date():
             '''create date '''

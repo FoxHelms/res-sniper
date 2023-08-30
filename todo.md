@@ -1,6 +1,14 @@
 # To Do - Prioritized
 
 
+- [] Improve tests. 
+--- What do I need to test?
+--- Big thing is if any post request produces a 500 error or connection denied by peer. 
+
+
+
+
+
 
 - [ ] Run Docker in project folder
 
