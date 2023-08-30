@@ -104,7 +104,8 @@ def login():
             with open('logincred.py', 'w') as lic:
                 enc_user = encrypt_message(ResyEmail)
                 enc_pw = encrypt_message(ResyPW)
-                creds_to_write = 'login_data = {"email" : ' + '"' + str(enc_user) + '"' + ', "password" :  ' + '"' + str(enc_pw) + '"' + '}'
+                dic_data = {'email' : enc_user, 'password' :  enc_pw}
+                creds_to_write = f'login_data = {dic_data}'
                 lic.write(creds_to_write)
                 lic.close()
             return redirect('/')
