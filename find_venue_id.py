@@ -1,4 +1,4 @@
-
+import requests as r
 
 def get_venue_id(resQuery: str) -> int:
         '''return resy venue ID based on query'''

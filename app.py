@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.sql import text
 from find_venue_id import get_venue_id
-from controller import get_rest_from_user as convertString
+from conv_str import get_rest_from_user as convertString
 from logincred import login_data
 from os import path
 from cryptic import *
@@ -78,7 +78,6 @@ def home():
         convStr = convertString(userRest)
         venue_id = get_venue_id(convStr)
         new_rest = Restaurants(restName=userRest, venId=venue_id)
-        #mdb.write_to_db(userRest,venue_id)
         try:
             db.session.add(new_rest)
             db.session.commit()
@@ -131,18 +130,6 @@ def error(message, e_code):
         return redirect('/')
     else:
         return render_template('errors.html', message=message, e_code=e_code)
-
-
-
-def cantestdb():
-    try:
-        db.session.query(text('1')).from_statement(text('SELECT 1')).all()
-        return '<h1>It works.</h1>'
-    except Exception as e:
-        # e holds description of the error
-        error_text = "<p>The error:<br>" + str(e) + "</p>"
-        hed = '<h1>Something is broken.</h1>'
-        return hed + error_text
 
 if __name__ == '__main__':
     #mdb.create_table()

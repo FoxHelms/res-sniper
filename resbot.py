@@ -3,8 +3,7 @@ import requests as r
 import resy_config as rc
 import datetime as DT
 from cryptic import *
-from find_venue_id import get_venue_id
-from controller import adjust_date
+from adj_date import adjust_date
 
 class NoSlotsError(Exception): pass
 class BookingError(Exception): pass
