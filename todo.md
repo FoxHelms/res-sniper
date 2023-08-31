@@ -1,23 +1,17 @@
 # To Do - Prioritized
 
-
-
-- [] Clean up code! Documentation, annotation, etc.
-
-
-
-
+- [ ] Run Docker in project folder
 
 
 
 ## Everything Else
-- [ ] Run Docker in project folder
 - [ ] send to Nick for feedback
 - [ ] host everything on Heroku
 - [ ] Use Cron To Go to run MakeRes on db every morning at 9am EST. 
 
 ### Done
 
+- [X] Clean up code! Documentation, annotation, etc.
 - [X] Improve tests. 
 - [X] Error pages
 - [X] Add en/decryption to resbot, resy config, app.py

@@ -10,9 +10,9 @@ def bot():
 
 def test_get_auth_token(bot):
     '''Check the auth token'''
-    tokenStr = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJleHAiOjE2OTYyMTczMTcsInVpZCI6MzY0NTA2NTIsImd0IjoiY29uc3VtZXIiLCJncyI6W10sImxhbmciOiJlbi11cyIsImV4dHJhIjp7Imd1ZXN0X2lkIjoxMjM0NDM3MjJ9fQ.AOF-LCJqoBmEjEfAuP1GjoZ6cfe9PzdZsP96X0g1rLaDTVAiulKJt2Qsso-fQiD5BKrj_hhKMlt7vwaa1Vx77pA-AOuRc5As0iYqQFdLhNMUjeTtFC6SwFtxslFiCYd5n4bdMJEc55_VgCY66fVvYMvgiD7jhhw2IsOuvhWCE7ZrJhMB'
+    tokenStr = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.'
     tokenGen = bot.auth
-    assert tokenGen[:36] == tokenStr[:36]
+    assert tokenGen[:36] == tokenStr
 
 def t_test_adjust_date_by_week(bot):
     '''check that the date is properly adjusted by a week'''
@@ -36,23 +36,11 @@ def test_find_table(bot):
     assert len(open_tables) > 0
 
 
-def test_don_angie_raises_error(bot):
+def test_don_angie_raises_error_when_requesting_open_tables(bot):
+    '''Don angie never has tables, should raise error'''
     venue_id = bot.get_venue_id('don-angie')
     with pytest.raises(NoSlotsError):
         open_tables = bot.get_avail_times_for_venue(venue_id)
-
-def test_create_conf_id(bot):
-    open_tables = bot.get_avail_times_for_venue(bot.test_id)
-    open_table = open_tables[0]
-    id = bot.create_config_id(open_table)
-    assert 'rgs://resy' in id
-
-def test_create_book_token(bot):
-    open_tables = bot.get_avail_times_for_venue(bot.test_id)
-    open_table = open_tables[0]
-    id = bot.create_config_id(open_table)
-    book_token = bot.create_book_token(id)
-    assert len(book_token) == 761
 
 def test_select_slot(bot):
     '''should return dictionary where date:start is greater than 20'''
@@ -63,7 +51,23 @@ def test_select_slot(bot):
     assert type(best_table) == dict
     assert (int(start_time[-8:-6]) >= 20) or (best_table == open_tables[0])
 
+def test_create_conf_id(bot):
+    '''Should create config id of reliable format'''
+    open_tables = bot.get_avail_times_for_venue(bot.test_id)
+    open_table = open_tables[0]
+    id = bot.create_config_id(open_table)
+    assert 'rgs://resy' in id
+
+def test_create_book_token(bot):
+    '''Should create book token of reliable length'''
+    open_tables = bot.get_avail_times_for_venue(bot.test_id)
+    open_table = open_tables[0]
+    id = bot.create_config_id(open_table)
+    book_token = bot.create_book_token(id)
+    assert len(book_token) == 761
+
 def test_make_reservation(bot):
+    '''Should make reservation'''
     open_tables = bot.get_avail_times_for_venue(bot.test_id)
     best_table = bot.select_slot(open_tables)
     id = bot.create_config_id(best_table)
@@ -72,6 +76,7 @@ def test_make_reservation(bot):
     assert success == 201
 
 def test_make_reservation_raises_error(bot):
+    '''Unrecognizable book token should result in booking failure'''
     open_tables = bot.get_avail_times_for_venue(int(bot.test_id))
     open_table = open_tables[0]
     id = bot.create_config_id(open_table)
