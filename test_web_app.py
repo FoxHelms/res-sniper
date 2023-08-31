@@ -2,8 +2,8 @@ from app import app
 from logincred import login_data
 from cryptic import encrypt_message
 
-def test_home_page():
-    '''Test that you can successfully get to the homepage IF logindata is provided'''
+def test_home_page_redirect():
+    '''Test that you are redirected to login page if no logindata is provided'''
     response = app.test_client().get('/')
     assert response.status_code == 200
     if login_data:
@@ -16,7 +16,6 @@ def test_encryption():
     human_readable = 'ThisIsAHumanReadablePassword'
     encrypted = encrypt_message(human_readable)
     assert human_readable not in str(encrypted)
-
 
 def test_post_name():
     with app.test_client() as c:
@@ -32,7 +31,6 @@ def test_error_page_loads():
     with app.test_client() as c:
         t_data = {'ResyEmail':'gibberish', 'ResyPW': 'gibberish'}
         d_post = c.post('/login', data=t_data, follow_redirects=True)
-        # Check that the second request was to the index page.
         assert b'<a href="/">Try Again</a>' in d_post.data
 
 def test_login_to_account():

@@ -14,16 +14,16 @@ class BookingError(Exception): pass
 class ResBot():
     '''Spawn to click on buttons and input/submit data on webpage'''
     def __init__(self) -> None:
-        self.usr = rc.email
-        self.pw = rc.pw
-        self.headers = rc.headers
+        self.usr: str = rc.email
+        self.pw: str = rc.pw
+        self.headers: dict = rc.headers
         self.booked_dates: List[str] = [] # get_ids()
-        self.time_delta = 7
-        self.test_id = '59679' # '59679' = el coco '8579' = shukette
+        self.time_delta: int = 7
+        self.test_id: str = '59679' # '59679' = el coco '8579' = shukette
 
-        def create_date():
+        def create_date() -> str:
             '''create date '''
-            today = DT.date.today()
+            today: DT.date = DT.date.today()
             nextweek: DT.date = today + DT.timedelta(days=self.time_delta)
             return nextweek.strftime('%Y-%m-%d') # '2023-08-22'
 
@@ -35,27 +35,10 @@ class ResBot():
         
         self.date = create_date()
 
-        '''
-        self.s = r.Session()
-
-        retry = Retry(connect=3, backoff_factor=0.5)
-        adapter = HTTPAdapter(max_retries=retry)
-        self.s.mount('http://', adapter)
-        self.s.mount('https://', adapter)
-        self.s.headers.update(hdrs)
-
-        self.s.proxies = {
-        'https': 'http://144.49.99.169:8080',
-        'https': 'http://144.49.99.169:8080',
-        }
-
-        self.s.cookies.clear()
-        '''
-
 
         def get_auth_token_and_payment_method_id():
             '''get auth token and payment method from resy'''
-            data = {
+            data: dict = {
             'email': self.usr,
             'password': self.pw
             }
@@ -71,9 +54,9 @@ class ResBot():
         self.headers['x-resy-auth-token'] = self.auth
         self.headers['x-resy-universal-auth'] = self.auth
 
-    def req_post(self):
-        '''wrapper for request post method, catches some exceptions'''
-
+    def keep_track_of_booked_dates(self) -> None:
+        '''Adds booked to list'''
+        self.booked_dates.append(self.date)
 
     def get_venue_id(self, resQuery: str) -> int:
         '''return resy venue ID based on query'''
@@ -88,23 +71,25 @@ class ResBot():
         resyID = dat['id']['resy']
         return resyID
     
-    def get_avail_times_for_venue(self, venue_id: int) -> List[dict]: 
+    def get_avail_times_for_venue(self, venue_id: int) -> List[dict]:
+        '''
+        If one date booked, look for more dates an additional week out
+        if more than one date booked, increment by just one day
+        ''' 
         if len(self.booked_dates) == 1:
             self.time_delta += 7
             self.date = adjust_date(self.time_delta)
-            print('Entered len = 1 loop')
         if len(self.booked_dates) > 1:
             self.time_delta += 1
             self.date = adjust_date(self.time_delta)
-            print('Entered len > 1 loop')
         url_path = f'https://api.resy.com/4/find?lat=0&long=0&day={self.date}&party_size=2&venue_id={venue_id}'
         response = r.get(url_path,headers=self.headers)
         response.raise_for_status()  # raises exception when not a 2xx response
         if response.status_code != 204:
             data = response.json()
-        results = data['results']
+            results = data['results']
         if results['venues'][0]['slots']:
-            open_slots = results['venues'][0]['slots']
+            open_slots: dict = results['venues'][0]['slots']
             return open_slots
         else:
             raise NoSlotsError('There are no open tables at that restaurant')
@@ -112,7 +97,6 @@ class ResBot():
     def select_slot(self, open_slots: List[dict]) -> dict:
         '''Choose first slot OR first slot that starts after 8:00pm'''
         # 'date': {'end': '2023-08-21 18:45:00', 'start': '2023-08-21 17:15:00'}
-        # next(x for x in the_iterable if x > 3)
         best_slot = None
         for slot in open_slots:
             slot_date: dict = slot.get('date')
@@ -125,32 +109,23 @@ class ResBot():
 
     def create_config_id(self, open_slot: dict) -> str:
         '''create config id token'''
-        config_id = open_slot['config']['token']
-        # config_dict = open_slot.get('config')
-        # config_id = config_dict.get('token')
-        return config_id
+        return open_slot['config']['token']
         
     def create_book_token(self, conf_id: str) -> str:
         '''takes params and makes book token'''
         params = (
-                    ('x-resy-auth-token', self.auth),
-                    ('config_id', conf_id),
-                    ('day', self.date),
-                    ('party_size', '2')
-                    )
-        
+            ('x-resy-auth-token', self.auth),
+            ('config_id', conf_id),
+            ('day', self.date),
+            ('party_size', '2')
+        )
         details_request = r.get('https://api.resy.com/3/details', headers=self.headers, params=params)
         details = details_request.json()
-        book_token = details['book_token']['value']
-        return book_token
-
-    def keep_track_of_booked_dates(self) -> None:
-        '''Adds booked to list'''
-        self.booked_dates.append(self.date)
+        return details['book_token']['value']
     
-    def make_reservation(self, book_token: str) -> None:
-        # take params and post reservation
-        # self.headers['x-resy-auth-token'] = self.auth
+    def make_reservation(self, book_token: str) -> int:
+        '''take book token and post reservation'''
+        self.headers['x-resy-auth-token'] = self.auth
         data = {
         'book_token': book_token,
         'struct_payment_method': self.payment_id,

@@ -1,11 +1,7 @@
 from typing import List
 
-'''
-This should be able to take user input and add it to the list that the resbot checks
-'''
-
 def get_rest_from_user(usrStr: str) -> str:
-    '''ask user for restaurant name and convert to url string'''
+    '''Convert user input string to url string'''
     return usrStr.replace(' ','-').lower()
 
 
