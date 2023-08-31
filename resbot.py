@@ -36,7 +36,7 @@ class ResBot():
         self.date = create_date()
 
 
-        def get_auth_token_and_payment_method_id() -> tuple(str):
+        def get_auth_token_and_payment_method_id():
             '''get auth token and payment method from resy'''
             data: dict = {
             'email': self.usr,
