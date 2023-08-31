@@ -10,7 +10,7 @@ def bot():
 
 def test_get_auth_token(bot):
     '''Check the auth token'''
-    tokenStr = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.'
+    tokenStr = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9'
     tokenGen = bot.auth
     assert tokenGen[:36] == tokenStr
 
