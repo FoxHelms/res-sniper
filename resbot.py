@@ -21,7 +21,7 @@ def requester(m,upath, *params, **data): # (optional data)
     if m == 'postj':
         response: r.models.Response = r.post(upath, headers=hdrs, json=data)
     if m == 'post':
-        hdrs['x-resy-auth-token'] = params[0]
+        # hdrs['x-resy-auth-token'] = params[0] >> need to create as addnl header
         response: r.models.Response = r.post(upath, headers=hdrs, data=data)
     if m == 'get':
         if params:
