@@ -20,9 +20,11 @@ def requester(m,upath,*params, **data): # (optional data)
         return response.json()
 
 
-t = requester('get','https://api.resy.com/4/find?lat=0&long=0&day=2023-09-17&party_size=2&venue_id=8579')
+s = 'https://resy.com/cities/rmi/kruse-and-muer-on-main?date=2023-09-12&seats=2'
 
-print(t)
+t = r.get(s)
+
+print(t.text)
 '''
 
 We have a way of checking if there are any open tables 

@@ -1,13 +1,11 @@
 # To Do - Prioritized
 
-- [ ] Split resbot class into: auth, time chk, booker, dater, poster/getter?
-
+- [ ] Write new tests for all classes, and test more cases of same functions (not just one and done)
 
 
 ## Everything Else
 
 - [ ] Document the abstractions. Why classes and files split the way I did? Does my flowchart make sense?
-- [ ] How to find all available slots at a restaurant without posting a date?
 - [ ] Change website so that you just paste link to the resy page of restaurant. Adds to list as hyperlinked rest name. 
 - [ ] Write Fxx?
 - [ ] Remove secret key from repo! Ignore it. 
@@ -15,7 +13,6 @@
 - [ ] Rename cryptic
 - [ ] Polish pass on all doc strings, should make it so that person doesn't have to read code. 
 - [ ] remove file for conv_string. Just add to code or smthng
-- [ ] Add more case testing of the same functionality
 - [ ] Encrypted =/= decrypted and decrypted(encrypted(input)) = input
 - [ ] Record quick video using the software so that someone can see the app in action if they dont wanna build it. 
 - [ ] Mock bot tests for when resy misbehaves. 
@@ -28,6 +25,8 @@
 ### Done
 
 
+- [X] How to find all available slots at a restaurant without posting a date?
+- [X] Split resbot class into: auth, time chk, booker, dater, poster/getter?
 - [X] How to rework the api? What makes most sense from a user perspective?
 - [X] send to Nick for feedback
 - [X] Clean up code! Documentation, annotation, etc.
