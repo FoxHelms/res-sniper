@@ -10,6 +10,7 @@ import re
 
 class NoSlotsError(Exception): pass
 class BookingError(Exception): pass
+class InvalidMethod(Exception): pass
 
 def requester(m,upath, *params, **data): # (optional data)
     hdrs: dict = {
@@ -27,6 +28,9 @@ def requester(m,upath, *params, **data): # (optional data)
         if params:
             response: r.models.Response = r.get(upath, headers=hdrs, params=params)
         response: r.models.Response = r.get(upath, headers=hdrs)
+    else:
+        raise InvalidMethod
+    # Maybe do: try: return response.json() except: return response. 
     response.raise_for_status()  # raises exception when not a 2xx response
     if response.status_code != 204:
         return response.json()
