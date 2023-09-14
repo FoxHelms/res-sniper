@@ -10,6 +10,8 @@ import re
 
 class NoSlotsError(Exception): pass
 class BookingError(Exception): pass
+class InvalidMethod(Exception): pass
+
 
 def requester(m,upath, *params, **data): # (optional data)
     hdrs: dict = {
@@ -20,13 +22,15 @@ def requester(m,upath, *params, **data): # (optional data)
         }
     if m == 'postj':
         response: r.models.Response = r.post(upath, headers=hdrs, json=data)
-    if m == 'post':
+    elif m == 'post':
         # hdrs['x-resy-auth-token'] = params[0] >> need to create as addnl header
         response: r.models.Response = r.post(upath, headers=hdrs, data=data)
-    if m == 'get':
+    elif m == 'get':
         if params:
             response: r.models.Response = r.get(upath, headers=hdrs, params=params)
         response: r.models.Response = r.get(upath, headers=hdrs)
+    else:
+        raise InvalidMethod
     response.raise_for_status()  # raises exception when not a 2xx response
     if response.status_code != 204:
         return response.json()

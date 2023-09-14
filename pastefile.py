@@ -1,15 +1,7 @@
-penis = {'k1':'v1','k2':'v2','k3':'v3'}
-u = 'username'
-p = '123123123'
+import requests as r
 
-def printer(req1, req2, *args, **kwargs):
-    print('Hello' + req1)
-    print('\nLets see ur tits' + req2)
-    u = args[0]
-    p = args[1]
-    print(f'U: {u}\npass: {p}\n\n')
-    print(kwargs)
+url = 'https://www.bne.com.au/passenger/flights/arrivals-departures'
 
+resp = r.get(url)
 
-printer('Fox', 'Mom', u, p, **penis)
-
+print(type(resp))
