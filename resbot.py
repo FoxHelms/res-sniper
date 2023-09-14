@@ -11,6 +11,7 @@ import re
 class NoSlotsError(Exception): pass
 class BookingError(Exception): pass
 class InvalidMethod(Exception): pass
+class BadLogin(Exception): pass
 
 
 def requester(m,upath, *params, **data): # (optional data)
@@ -40,10 +41,13 @@ class Authenticator:
     @classmethod
     def get_auth_and_payment(cls,usr,pw):
         '''get auth token and payment method from resy'''
-        res_data = requester('post', 'https://api.resy.com/3/auth/password', email=usr, password=pw)
-        auth_token = res_data['token']
-        payment_method_string = '{"id":' + str(res_data['payment_method_id']) + '}'
-        return auth_token,payment_method_string
+        try:
+            res_data = requester('post', 'https://api.resy.com/3/auth/password', email=usr, password=pw)
+            auth_token = res_data['token']
+            payment_method_string = '{"id":' + str(res_data['payment_method_id']) + '}'
+            return auth_token,payment_method_string
+        except:
+            raise BadLogin
 
 class RestaurantIdentifier:
     @classmethod
