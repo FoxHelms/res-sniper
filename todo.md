@@ -1,6 +1,13 @@
 # To Do - Prioritized
 
 - [ ] Write new tests for all classes, and test more cases of same functions (not just one and done)
+-- [X] Requester
+-- [ ] Authenticator
+-- [ ] Conv_string
+-- [ ] Find Venue
+-- [ ] Booker
+-- [ ] Time Checker
+-- [ ] Web App
 
 
 ## Everything Else

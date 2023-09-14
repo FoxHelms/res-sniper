@@ -1,9 +1,7 @@
 from unittest.mock import patch, Mock
-from urllib import request
 import pytest
 import resbot
 from resbot import InvalidMethod
-# import requests as r
 
 hdrs: dict = {
             'accept-language': 'en-US,en;q=0.9',
