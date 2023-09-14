@@ -81,12 +81,16 @@ class TimeChecker:
 
         t = requester('postj',urlpath, **data)
 
-        available_dates = t['search']['hits'][0]['inventory_reservation']
-
+        try:
+            available_dates = t['search']['hits'][0]['inventory_reservation']
+        except:
+            return False
         if available_dates:
             return available_dates
         else:
             return False
+
+
     @classmethod
     def get_times_confs_for_ven(cls, venue_id: int, avail_dates) -> List[dict]:
         '''
@@ -111,9 +115,9 @@ class TimeChecker:
         for d in avail_dates:
             url_path = f'https://api.resy.com/4/find?lat=0&long=0&day={d}&party_size=2&venue_id={venue_id}'
             data = requester('get',url_path)
-            results = data['results']
-            if results['venues'][0]['slots']:
-                open_slots: List[dict] = results['venues'][0]['slots']
+            results = data['results']['venues'][0]['slots']
+            if results:
+                open_slots: List[dict] = results
                 get_conf()
         return all_times_confs
 
