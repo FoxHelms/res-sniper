@@ -1,13 +1,14 @@
 # To Do - Prioritized
 
-- [ ] Write new tests for all classes, and test more cases of same functions (not just one and done)
+- [ ] Write new tests for all classes, and test more cases of same functions (not just one and done), Mock bot tests for when resy misbehaves.
 -- [X] Requester
--- [ ] Authenticator
+-- [X] Authenticator
+-- [ ] Rest Identifier
+-- [ ] Time Checker
+-- [ ] Booker
+-- [ ] Web App
 -- [ ] Conv_string
 -- [ ] Find Venue
--- [ ] Booker
--- [ ] Time Checker
--- [ ] Web App
 
 
 ## Everything Else
@@ -22,7 +23,6 @@
 - [ ] remove file for conv_string. Just add to code or smthng
 - [ ] Encrypted =/= decrypted and decrypted(encrypted(input)) = input
 - [ ] Record quick video using the software so that someone can see the app in action if they dont wanna build it. 
-- [ ] Mock bot tests for when resy misbehaves. 
 
 
 - [ ] Run Docker in project folder
