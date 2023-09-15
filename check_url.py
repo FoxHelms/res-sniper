@@ -40,5 +40,3 @@ def conf_good_url(usrStr: str) -> str:
         if conf_host(usrStr) and conf_only_two_query(usrStr) and conf_link_rest_page(usrStr):
             return True
     return False
-
-print(conf_good_url(s))

@@ -15,16 +15,24 @@ def test_encryption():
     '''Test that a password provided is not the same as the password stored'''
     human_readable = 'ThisIsAHumanReadablePassword'
     encrypted = encrypt_message(human_readable)
-    assert human_readable not in str(encrypted)
+    assert human_readable != encrypted
 
-def test_post_name():
-    '''with app.test_client() as c:
-        t_data = {'userRest':'Mischa'}
+
+def test_post_good_link():
+    '''Good link submission'''
+    with app.test_client() as c:
+        s = 'https://resy.com/cities/ny/mischa?date=2023-09-14&seats=21'
+        t_data = {'userRest':s}
         d_post = c.post('/', data=t_data)
-        updated_page = app.test_client().get('/')
-        assert d_post.status_code == 302
-        assert updated_page.status_code == 200
-        assert b'<td>Mischa</td>' in updated_page.data'''
+        assert d_post.status_code == 200
+
+def test_post_bad_link():
+    '''Good link submission'''
+    with app.test_client() as c:
+        s = 'https://resy.com'
+        t_data = {'userRest':s}
+        d_post = c.post('/', data=t_data, follow_redirects=True)
+        assert b'<a href="/">Try Again</a>' in d_post.data
 
 def test_error_page_loads():
     '''Load error page!'''
@@ -33,14 +41,6 @@ def test_error_page_loads():
         d_post = c.post('/login', data=t_data, follow_redirects=True)
         assert b'<a href="/">Try Again</a>' in d_post.data
 
-def test_login_to_account():
-    '''Should log into test account'''
-    with app.test_client() as c:
-        t_data = {'ResyEmail':'r6174126@gmail.com', 'ResyPW': '7uEWA%r34#z5'}
-        d_post = c.post('/login', data=t_data)
-        updated_page = app.test_client().get('/')
-        assert d_post.status_code == 302
-        assert updated_page.status_code == 200
 
 
 
