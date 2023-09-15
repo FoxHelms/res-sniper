@@ -26,6 +26,8 @@ def requester(m,upath, *params, **data): # (optional data)
     elif m == 'post':
         # hdrs['x-resy-auth-token'] = params[0] >> need to create as addnl header
         response: r.models.Response = r.post(upath, headers=hdrs, data=data)
+        if response.status_code != 200 or response.status_code != 201:
+            return response.status_code
     elif m == 'get':
         if params:
             response: r.models.Response = r.get(upath, headers=hdrs, params=params)
@@ -144,6 +146,7 @@ class Booker:
         self.booked_dates.append(day)
         
     def create_book_token(self, all_time_confs_key, all_time_confs_value) -> str:
+        # change this bad boy to a post!
         '''takes params and makes book token'''
         params = (
             ('x-resy-auth-token', self.auth),
@@ -162,3 +165,4 @@ class Booker:
         'source_id': 'resy.com-venue-details'
         }
         requester('post','https://api.resy.com/3/book', self.auth, **data)
+        
