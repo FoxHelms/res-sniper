@@ -6,7 +6,7 @@
 -- [X] Authenticator
 -- [X] Rest Identifier
 -- [X] Time Checker
--- [ ] Booker
+-- [X] Booker
 -- [ ] Web App
 -- [ ] Conv_string
 -- [ ] Find Venue

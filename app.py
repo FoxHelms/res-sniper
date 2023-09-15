@@ -5,7 +5,7 @@ from datetime import datetime
 from os import path
 from cryptic import *
 from find_venue_id import get_venue_id
-from conv_str import get_rest_from_user as convertString
+from check_url import get_rest_from_user as convertString
 from logincred import login_data
 
 app = Flask(__name__)

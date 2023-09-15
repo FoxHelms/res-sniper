@@ -1,4 +1,4 @@
-import conv_str as bot
+import check_url as bot
 
 def test_get_rest_correctly_converts_string():
     '''human readable string to url-friendly string
