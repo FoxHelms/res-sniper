@@ -39,6 +39,6 @@ def test_post_method(mock_get):
     fake_data = {'name':'Scooby'}
     mock_response = Mock()
     mock_get.return_value = mock_response
-    resbot.requester(m='post', upath='https://api.website.com', name='Scooby')
+    resbot.requester('post', 'https://api.website.com', **fake_data)
     mock_get.assert_called_with('https://api.website.com', headers=hdrs, data=fake_data)
     
