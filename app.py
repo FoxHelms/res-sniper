@@ -4,8 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from os import path
 from cryptic import *
-from find_venue_id import get_venue_id
-from check_url import get_rest_from_user as convertString
+from resbot import RestaurantIdentifier
+from check_url import conf_good_url
 from logincred import login_data
 
 app = Flask(__name__)
@@ -57,8 +57,9 @@ def home():
        return redirect('/login')
     if request.method == 'POST':
         userRest = request.form['userRest']
-        convStr = convertString(userRest)
-        venue_id = get_venue_id(convStr)
+        if not conf_good_url(userRest):
+            return render_template('error.html', message='Please enter a resy restaurant link', e_code='Please Try Again')
+        venue_id = RestaurantIdentifier.get_venue_id(userRest)
         new_rest = Restaurants(restName=userRest, venId=venue_id)
         try:
             db.session.add(new_rest)

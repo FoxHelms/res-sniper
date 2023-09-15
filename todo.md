@@ -8,8 +8,8 @@
 -- [X] Time Checker
 -- [X] Booker
 -- [ ] Web App
--- [ ] Conv_string
--- [ ] Find Venue
+-- [X] Conv_string (renamed)
+-- [X] Find Venue
 
 
 ## Everything Else
