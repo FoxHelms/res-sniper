@@ -1,16 +1,14 @@
 # To Do - Prioritized
 
-- [ ] Change website so that you just paste link to the resy page of restaurant. Adds to list as hyperlinked rest name. 
-- [ ] remove file for conv_string. Just add to code or smthng
+- [ ] Write Fxx
 
 
 
 ## Everything Else
 
 - [ ] Document the abstractions. Why classes and files split the way I did? Does my flowchart make sense?
-- [ ] Write Fxx?
 - [ ] Remove secret key from repo! Ignore it. 
-- [ ] Expand This project demonstrates: more detail about reverse engineering: what did you discover and use?
+- [ ] Expand "This project demonstrates": more detail about reverse engineering: what did you discover and use?
 - [ ] Rename cryptic
 - [ ] Polish pass on all doc strings, should make it so that person doesn't have to read code. 
 - [ ] Encrypted =/= decrypted and decrypted(encrypted(input)) = input
@@ -23,6 +21,10 @@
 
 ### Done
 
+
+
+- [X] Change website so that you just paste link to the resy page of restaurant. Adds to list as hyperlinked rest name. 
+- [X] remove file for conv_string. Just add to code or smthng
 - [X] Write new tests for all classes, and test more cases of same functions (not just one and done), Mock bot tests for when resy misbehaves.
 -- [X] Requester
 -- [X] Add something to requester that raises an exception if not json data is returned???
