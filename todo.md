@@ -1,27 +1,18 @@
 # To Do - Prioritized
 
-- [ ] Write new tests for all classes, and test more cases of same functions (not just one and done), Mock bot tests for when resy misbehaves.
--- [X] Requester
--- [X] Add something to requester that raises an exception if not json data is returned???
--- [X] Authenticator
--- [X] Rest Identifier
--- [X] Time Checker
--- [X] Booker
--- [X] Web App
--- [X] Conv_string (renamed)
--- [X] Find Venue
+- [ ] Change website so that you just paste link to the resy page of restaurant. Adds to list as hyperlinked rest name. 
+- [ ] remove file for conv_string. Just add to code or smthng
+
 
 
 ## Everything Else
 
 - [ ] Document the abstractions. Why classes and files split the way I did? Does my flowchart make sense?
-- [ ] Change website so that you just paste link to the resy page of restaurant. Adds to list as hyperlinked rest name. 
 - [ ] Write Fxx?
 - [ ] Remove secret key from repo! Ignore it. 
 - [ ] Expand This project demonstrates: more detail about reverse engineering: what did you discover and use?
 - [ ] Rename cryptic
 - [ ] Polish pass on all doc strings, should make it so that person doesn't have to read code. 
-- [ ] remove file for conv_string. Just add to code or smthng
 - [ ] Encrypted =/= decrypted and decrypted(encrypted(input)) = input
 - [ ] Record quick video using the software so that someone can see the app in action if they dont wanna build it. 
 
@@ -32,7 +23,16 @@
 
 ### Done
 
-
+- [X] Write new tests for all classes, and test more cases of same functions (not just one and done), Mock bot tests for when resy misbehaves.
+-- [X] Requester
+-- [X] Add something to requester that raises an exception if not json data is returned???
+-- [X] Authenticator
+-- [X] Rest Identifier
+-- [X] Time Checker
+-- [X] Booker
+-- [X] Web App
+-- [X] Conv_string (renamed)
+-- [X] Find Venue
 - [X] How to find all available slots at a restaurant without posting a date?
 - [X] Split resbot class into: auth, time chk, booker, dater, poster/getter?
 - [X] How to rework the api? What makes most sense from a user perspective?
