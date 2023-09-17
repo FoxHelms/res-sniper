@@ -23,7 +23,7 @@ def test_post_good_link():
     with app.test_client() as c:
         s = 'https://resy.com/cities/ny/mischa?date=2023-09-14&seats=21'
         t_data = {'userRest':s}
-        d_post = c.post('/', data=t_data)
+        d_post = c.post('/', data=t_data, follow_redirects=True)
         assert d_post.status_code == 200
 
 def test_post_bad_link():

@@ -12,6 +12,8 @@
         This app will make you a resy reservation at the restaurants on your list
         <br>
         Best used for spots where reservations fill up quickly!
+        <br>
+        Paste a Resy link below to start making reservations
     </h3>
 
     {% if restaurants|length < 1 %}
@@ -21,7 +23,9 @@
     <table id='restaurants'>
         {% for restaurant in restaurants %}
             <tr>
-                <td>{{ restaurant.restName }}</td>
+                <td>
+                    <a href="{{ restaurant.venUrl }}">{{ restaurant.restName }}</a>
+                </td>
                 <td>
                     <a href="/delete/{{restaurant.id}}">&#8722;</a>
                 </td>

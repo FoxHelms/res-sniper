@@ -19,7 +19,7 @@ def conf_host(usrStr):
 
 def conf_only_two_query(usrStr):
     try:
-        s_queries = re.search('?(.*)', usrStr)
+        s_queries = re.search('\?(.*)', usrStr)
         len_queries = len(s_queries.group(1))
     except:
         return False
@@ -40,3 +40,5 @@ def conf_good_url(usrStr: str) -> str:
         if conf_host(usrStr) and conf_only_two_query(usrStr) and conf_link_rest_page(usrStr):
             return True
     return False
+
+print(conf_good_url('https://resy.com/cities/rmi/kruse-and-muer-on-main?date=2023-09-16&seats=2'))

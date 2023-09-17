@@ -40,6 +40,7 @@ class Restaurants(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     restName = db.Column(db.String(200), nullable=False)
     venId = db.Column(db.Integer)
+    venUrl = db.Column(db.String(200), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -56,11 +57,13 @@ def home():
     if not login_data:
        return redirect('/login')
     if request.method == 'POST':
-        userRest = request.form['userRest']
-        if not conf_good_url(userRest):
-            return render_template('error.html', message='Please enter a resy restaurant link', e_code='Please Try Again')
-        venue_id = RestaurantIdentifier.get_venue_id(userRest)
-        new_rest = Restaurants(restName=userRest, venId=venue_id)
+        userUrl = request.form['userRest']
+        if conf_good_url(userUrl) == False:
+           return render_template('error.html', message='Please enter a resy restaurant link', e_code='Please Try Again')
+        lower_name_rest = RestaurantIdentifier.convert_url(userUrl)[1].replace('-',' ')
+        name_rest = lower_name_rest.title()
+        venue_id = RestaurantIdentifier.get_venue_id(userUrl)
+        new_rest = Restaurants(restName=name_rest, venId=venue_id, venUrl=userUrl)
         try:
             db.session.add(new_rest)
             db.session.commit()
