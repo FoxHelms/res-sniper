@@ -2,12 +2,12 @@
 
 - [ ] Write new tests for all classes, and test more cases of same functions (not just one and done), Mock bot tests for when resy misbehaves.
 -- [X] Requester
--- [ ] Add something to requester that raises an exception if not json data is returned
+-- [X] Add something to requester that raises an exception if not json data is returned???
 -- [X] Authenticator
 -- [X] Rest Identifier
 -- [X] Time Checker
 -- [X] Booker
--- [ ] Web App
+-- [X] Web App
 -- [X] Conv_string (renamed)
 -- [X] Find Venue
 

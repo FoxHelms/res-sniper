@@ -12,6 +12,7 @@ class NoSlotsError(Exception): pass
 class BookingError(Exception): pass
 class InvalidMethod(Exception): pass
 class BadLogin(Exception): pass
+class NoJson(Exception): pass
 
 
 def requester(m,upath, *params, **data): # (optional data)
@@ -36,7 +37,10 @@ def requester(m,upath, *params, **data): # (optional data)
         raise InvalidMethod
     response.raise_for_status()  # raises exception when not a 2xx response
     if response.status_code != 204:
-        return response.json()
+        try:
+            return response.json()
+        except:
+            raise NoJson
 
 
 class Authenticator:
