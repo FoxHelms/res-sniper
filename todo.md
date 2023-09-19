@@ -1,6 +1,5 @@
 # To Do - Prioritized
 
-- [ ] Write Fxx
 
 
 
@@ -9,9 +8,7 @@
 - [ ] Document the abstractions. Why classes and files split the way I did? Does my flowchart make sense?
 - [ ] Remove secret key from repo! Ignore it. 
 - [ ] Expand "This project demonstrates": more detail about reverse engineering: what did you discover and use?
-- [ ] Rename cryptic
 - [ ] Polish pass on all doc strings, should make it so that person doesn't have to read code. 
-- [ ] Encrypted =/= decrypted and decrypted(encrypted(input)) = input
 - [ ] Record quick video using the software so that someone can see the app in action if they dont wanna build it. 
 
 
@@ -23,6 +20,7 @@
 
 
 
+- [X] Rename cryptic
 - [X] Change website so that you just paste link to the resy page of restaurant. Adds to list as hyperlinked rest name. 
 - [X] remove file for conv_string. Just add to code or smthng
 - [X] Write new tests for all classes, and test more cases of same functions (not just one and done), Mock bot tests for when resy misbehaves.

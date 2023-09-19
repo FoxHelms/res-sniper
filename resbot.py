@@ -138,10 +138,8 @@ class TimeChecker:
         return next(iter(all_time_confs))
 
 class Booker:
-    def __init__(self) -> None:
+    def __init__(self, usr, pw) -> None:
         self.booked_dates: List[str] = [] # get_ids()
-        usr = ''
-        pw = ''
         self.auth, self.payment_id = Authenticator.get_auth_and_payment(usr,pw)
 
     def keep_track_of_booked_dates(self, day) -> None:
