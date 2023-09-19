@@ -1,6 +1,6 @@
 from app import app
 from logincred import login_data
-from cryptic import encrypt_message
+from encryption import encrypt_message
 
 def test_home_page_redirect():
     '''Test that you are redirected to login page if no logindata is provided'''

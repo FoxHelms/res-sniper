@@ -3,7 +3,8 @@ from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from os import path
-from cryptic import *
+import time
+from encryption import *
 from resbot import RestaurantIdentifier, Authenticator
 from check_url import conf_good_url
 from logincred import login_data
@@ -84,7 +85,7 @@ def login():
         ResyPW = request.form['ResyPW']
         data = {'email': ResyEmail, 'password': ResyPW}
         result: int = tryLogin(data)
-        if result != 200 or result != 201:
+        if result.status_code != 200:
             return render_template('error.html', message='Please login using your Resy credentials', e_code=result.status_code)
         with open('logincred.py', 'w') as lic:
             # Stores encrypted data to protect user data
@@ -94,6 +95,7 @@ def login():
             creds_to_write = f'login_data = {dic_data}'
             lic.write(creds_to_write)
             lic.close()
+            time.sleep(1)
         return redirect('/')
     else:
         return render_template('login.html')

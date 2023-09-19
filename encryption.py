@@ -10,14 +10,14 @@ def generate_key():
     Generates a key and save it into a file
     """
     key: bytes = Fernet.generate_key()
-    with open("secret.key", "wb") as key_file:
+    with open("new_secret.key", "wb") as key_file:
         key_file.write(key)
 
 def load_key() -> bytes:
     """
     Load the previously generated key
     """
-    return open("secret.key", "rb").read()
+    return open("new_secret.key", "rb").read()
 
 def encrypt_message(message: str) -> bytes:
     """

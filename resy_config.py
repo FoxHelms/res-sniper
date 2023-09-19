@@ -1,5 +1,5 @@
 from logincred import login_data
-from cryptic import *
+from encryption import *
 
 '''
 Config file for resbot

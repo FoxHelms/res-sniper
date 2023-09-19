@@ -2,9 +2,8 @@ from dataclasses import dataclass
 from typing import List
 from xmlrpc.client import Boolean
 import requests as r
-import resy_config as rc
 import datetime as DT
-from cryptic import *
+from encryption import *
 from adj_date import adjust_date
 import re
 
