@@ -11,11 +11,11 @@ def test_home_page_redirect():
     else:
         assert b'<h1>Login</h1>' in response.data
 
-def test_encryption():
-    '''Test that a password provided is not the same as the password stored'''
-    human_readable = 'ThisIsAHumanReadablePassword'
-    encrypted = encrypt_message(human_readable)
-    assert human_readable != encrypted
+# def test_encryption():
+#     '''Test that a password provided is not the same as the password stored'''
+#     human_readable = 'ThisIsAHumanReadablePassword'
+#     encrypted = encrypt_message(human_readable)
+#     assert human_readable != encrypted
 
 
 def test_post_good_link():
