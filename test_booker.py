@@ -14,7 +14,7 @@ hdrs: dict = {
 @patch('resbot.Authenticator.get_auth_and_payment')
 def bot(mock_auth):
     mock_auth.return_value = '',''
-    return resbot.Booker()
+    return resbot.Booker('','')
 
 
 
