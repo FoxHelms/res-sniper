@@ -5,7 +5,7 @@ from datetime import datetime
 from os import path
 import time
 from encryption import *
-from resbot import RestaurantIdentifier, Authenticator
+from resbot import RestaurantIdentifier
 from check_url import conf_good_url
 from logincred import login_data
 
@@ -21,7 +21,7 @@ db.init_app(app)
 
 
 def create_database():
-    '''Check for database and create one in app context'''
+    '''Check for local database and create one in app context'''
     if not path.exists('instance/' + db_name):
         with app.app_context():
             db.create_all()
@@ -38,6 +38,7 @@ def tryLogin(data: dict) -> r.models.Response:
     return r.post(post_path, headers=hdrs, data=data)
 
 class Restaurants(db.Model):
+    ''' Table class for restaurants database'''
     id = db.Column(db.Integer, primary_key=True)
     restName = db.Column(db.String(200), nullable=False)
     venId = db.Column(db.Integer)
@@ -53,7 +54,8 @@ create_database()
 @app.route('/', methods=['GET', 'POST'])
 def home():
     '''
-    Home, defaults to login, maintains list, adds ven IDs to db
+    Home, defaults to login if login creds is empty (meaning no user data has been stored)
+    Checks to make sure user provided url is valid, then pulls restaurant name and ID from resy, adds to db
     '''
     if not login_data:
        return redirect('/login')
@@ -78,7 +80,8 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     '''
-    Login page, tries login with user input
+    Login page, posts user input to resy. 
+    If resy login succeeds, user data is encrypted and stored in local file
     '''
     if request.method == 'POST':
         ResyEmail = request.form['ResyEmail']
@@ -95,7 +98,7 @@ def login():
             creds_to_write = f'login_data = {dic_data}'
             lic.write(creds_to_write)
             lic.close()
-            time.sleep(1)
+            time.sleep(0.5)
         return redirect('/')
     else:
         return render_template('login.html')
@@ -104,7 +107,7 @@ def login():
 @app.route('/delete/<int:id>')
 def delete(id):
     '''
-    Delete, removecs rest from database
+    Delete, removes rest from database
     '''
     rest_to_delete = Restaurants.query.get_or_404(id)
     try:
