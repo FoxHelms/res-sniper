@@ -4,7 +4,6 @@ from xmlrpc.client import Boolean
 import requests as r
 import datetime as DT
 from encryption import *
-from adj_date import adjust_date
 import re
 
 class NoSlotsError(Exception): pass
