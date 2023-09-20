@@ -19,20 +19,19 @@ def create_connection(db_file):
 
 def select_all_rests(conn):
     """
-    Query all rows in the tasks table
+    Query all rows in the restaurant table
     :param conn: the Connection object
-    :return:
+    :return: list of tuples (id, name, venId, url, date)
     """
     cur = conn.cursor()
     cur.execute("SELECT * FROM 'restaurants' LIMIT 0,30")
 
-    return cur.fetchall() # list of tuples (id, name, venId, url, date)
+    return cur.fetchall()
 
 def format_rests(rest_tuple):
     '''just return the venId and url'''
     return rest_tuple[2], rest_tuple[3]
     
-
 
 
 def get_rest_lists():

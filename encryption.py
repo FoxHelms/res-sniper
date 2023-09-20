@@ -1,6 +1,7 @@
 from cryptography.fernet import Fernet
 
 '''
+Not my encryption algorithm. 
 From: https://stackoverflow.com/a/66250021
 '''
 

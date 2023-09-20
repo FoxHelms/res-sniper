@@ -1,14 +1,17 @@
 # To Do - Prioritized
 
+- [ ] Change book token method from get to post json
+- [ ] INSTEAD of importing rc, just import login data and do decryption in sniper. 
 
 
 
 ## Everything Else
 
+- [ ] Put gen_key function into the web app login page?!?!?
+- [ ] Write tests for encryption? How to mock that?!
 - [ ] Document the abstractions. Why classes and files split the way I did? Does my flowchart make sense?
-- [ ] Remove secret key from repo! Ignore it. 
+-- [ ] Prioritize rest with shorter slot lists because less chances of getting res.
 - [ ] Expand "This project demonstrates": more detail about reverse engineering: what did you discover and use?
-- [ ] Polish pass on all doc strings, should make it so that person doesn't have to read code. 
 - [ ] Record quick video using the software so that someone can see the app in action if they dont wanna build it. 
 
 
@@ -20,6 +23,8 @@
 
 
 
+- [X] Polish pass on all doc strings, should make it so that person doesn't have to read code. 
+- [X] Remove secret key from repo! Ignore it. 
 - [X] Rename cryptic
 - [X] Change website so that you just paste link to the resy page of restaurant. Adds to list as hyperlinked rest name. 
 - [X] remove file for conv_string. Just add to code or smthng
