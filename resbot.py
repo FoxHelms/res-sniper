@@ -167,13 +167,9 @@ class Booker:
         post json request to API url of the restaurant
         parse the book token from the response
         return book token'''
-        params = (
-            ('x-resy-auth-token', self.auth),
-            ('config_id', all_time_confs_value),
-            ('day', all_time_confs_key[:10]),
-            ('party_size', '2')
-        )
-        details = requester('get', 'https://api.resy.com/3/details', *params)
+        data = {'x-resy-auth-token': self.auth, 'config_id': all_time_confs_value,
+        'day': all_time_confs_key[:10],'party_size': '2'}
+        details = requester('postj', 'https://api.resy.com/3/details', **data)
         return details['book_token']['value']
     
     def make_reservation(self, book_token: str) -> int:
