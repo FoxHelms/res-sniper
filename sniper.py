@@ -71,6 +71,7 @@ if __name__ == '__main__':
     # bot = Booker(rc.email, rc.pw)
     to_book = get_best_non_overelap_times()
     for slot in to_book:
+        print('nice')
         # bot.make_reservation(bot.create_book_token(slot, to_book[slot]))
 
 
