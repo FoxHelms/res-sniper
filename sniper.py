@@ -59,14 +59,14 @@ def get_best_non_overelap_times():
 
 if __name__ == '__main__':
 
-    #bot = Booker(rc.email, rc.pw)
+    # bot = Booker(rc.email, rc.pw)
     to_book = get_best_non_overelap_times()
     for slot in to_book:
         print(slot)
         print('\n')
         print(to_book[slot])
         print('\n')
-        #bot.make_reservation(bot.create_book_token(slot, to_book[slot]))
+        # bot.make_reservation(bot.create_book_token(slot, to_book[slot]))
 
 
         
