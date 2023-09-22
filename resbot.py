@@ -3,7 +3,6 @@ from typing import List
 from xmlrpc.client import Boolean
 import requests as r
 import datetime as DT
-from encryption import *
 import re
 
 class NoSlotsError(Exception): pass
@@ -152,34 +151,28 @@ class TimeChecker:
 class Booker:
     '''
     Class for anything related to making a reservation
-    '''
-    def __init__(self, usr, pw) -> None:
-        '''
-        Instantiating this class is similar to creating a session on resy's website
-        It generates an auth token and payment id
-        '''
-        self.booked_dates: List[str] = [] # get_ids()
-        self.auth, self.payment_id = Authenticator.get_auth_and_payment(usr,pw)
-        
-    def create_book_token(self, all_time_confs_key, all_time_confs_value) -> str:
+    '''   
+    @classmethod 
+    def create_book_token(cls, auth, all_time_confs_key, all_time_confs_value) -> str:
         # CHANGE TO POST JSON
         '''uses best time slot and best config id as parameters,
         post json request to API url of the restaurant
         parse the book token from the response
         return book token'''
-        data = {'x-resy-auth-token': self.auth, 'config_id': all_time_confs_value,
+        data = {'x-resy-auth-token': auth, 'config_id': all_time_confs_value,
         'day': all_time_confs_key[:10],'party_size': '2'}
         details = requester('postj', 'https://api.resy.com/3/details', **data)
         return details['book_token']['value']
     
-    def make_reservation(self, book_token: str) -> int:
+    @classmethod
+    def make_reservation(cls, book_token: str, auth, p_id) -> int:
         '''using auth token, payment id, and book token as parameters
         post request to API url
         If no error is returned, then the reservation was successfully booked'''
         data = {
         'book_token': book_token,
-        'struct_payment_method': self.payment_id,
+        'struct_payment_method': p_id,
         'source_id': 'resy.com-venue-details'
         }
-        requester('post','https://api.resy.com/3/book', self.auth, **data)
+        return requester('post','https://api.resy.com/3/book', auth, **data)
         

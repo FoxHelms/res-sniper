@@ -1,20 +1,18 @@
 # To Do - Prioritized
 
-- [ ] Change book token method from get to post json
-- [ ] INSTEAD of importing rc, just import login data and do decryption in sniper. 
+- [ ] Document the abstractions. Why classes and files split the way I did? Does my flowchart make sense?
+-- [ ] Web app takes links instead of searches, for eease of experience
+-- [ ] Resy misbehaved a lot with my post requests, so separating classes by type of get/post behavior
+-- [ ] Prioritize rest with shorter slot lists because less chances of getting res.
+-- [ ] Decided to not use encryption and just write auth token to file on server
+- [ ] Expand "This project demonstrates": more detail about reverse engineering: what did you discover and use?
+-- [ ] Using network inspector to find api links, copying cURL, converting to python request
 
 
 
 ## Everything Else
 
-- [ ] Put gen_key function into the web app login page?!?!?
-- [ ] Write tests for encryption? How to mock that?!
-- [ ] Document the abstractions. Why classes and files split the way I did? Does my flowchart make sense?
--- [ ] Prioritize rest with shorter slot lists because less chances of getting res.
-- [ ] Expand "This project demonstrates": more detail about reverse engineering: what did you discover and use?
 - [ ] Record quick video using the software so that someone can see the app in action if they dont wanna build it. 
-
-
 - [ ] Run Docker in project folder
 - [ ] host everything on Heroku
 - [ ] Use Cron To Go to run MakeRes on db every morning at 9am EST. 
@@ -23,6 +21,8 @@
 
 
 
+- [X] INSTEAD of importing rc, just import login data and do decryption in sniper. 
+- [X] Change book token method from get to post json
 - [X] Polish pass on all doc strings, should make it so that person doesn't have to read code. 
 - [X] Remove secret key from repo! Ignore it. 
 - [X] Rename cryptic

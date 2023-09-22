@@ -1,15 +1,13 @@
 import requests as r
-from flask import Flask, render_template, request, redirect
+from flask import Flask, session, g, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from os import path
-import time
-from encryption import *
+import os
 from resbot import RestaurantIdentifier
 from check_url import conf_good_url
-from logincred import login_data
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 
 # Database init
 db = SQLAlchemy()
@@ -17,12 +15,13 @@ db_name = 'restaurants.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_name
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SECRET_KEY'] = 'thisisasecretkey'
+app.config['CACHE_TYPE'] = 'SimpleCache' 
 db.init_app(app)
 
 
 def create_database():
     '''Check for local database and create one in app context'''
-    if not path.exists('instance/' + db_name):
+    if not os.path.exists('instance/' + db_name):
         with app.app_context():
             db.create_all()
             db.session.commit()
@@ -57,7 +56,7 @@ def home():
     Home, defaults to login if login creds is empty (meaning no user data has been stored)
     Checks to make sure user provided url is valid, then pulls restaurant name and ID from resy, adds to db
     '''
-    if not login_data:
+    if not g.user:
        return redirect('/login')
     if request.method == 'POST':
         userUrl = request.form['userRest']
@@ -81,25 +80,25 @@ def home():
 def login():
     '''
     Login page, posts user input to resy. 
-    If resy login succeeds, user data is encrypted and stored in local file
+    If resy login succeeds, auth token is stored in local file
     '''
     if request.method == 'POST':
+        session.pop('user', None)
+        session.pop('passw', None)
         ResyEmail = request.form['ResyEmail']
         ResyPW = request.form['ResyPW']
         data = {'email': ResyEmail, 'password': ResyPW}
         result: int = tryLogin(data)
         if result.status_code != 200:
             return render_template('error.html', message='Please login using your Resy credentials', e_code=result.status_code)
-        with open('logincred.py', 'w') as lic:
-            # Stores encrypted data to protect user data
-            enc_user = encrypt_message(ResyEmail) 
-            enc_pw = encrypt_message(ResyPW)
-            dic_data = {'email' : enc_user, 'password' :  enc_pw}
-            creds_to_write = f'login_data = {dic_data}'
-            lic.write(creds_to_write)
-            lic.close()
-            time.sleep(0.5)
-        return redirect('/')
+        page_json = result.json()
+        with open('auth_token.txt', 'w') as f:
+            f.write(page_json['token'])
+            f.write('\n')
+            f.write('{"id":' + str(page_json['payment_method_id']) + '}')
+        session['user'] = ResyEmail
+        session['passw'] = ResyPW
+        return redirect(url_for('home'))
     else:
         return render_template('login.html')
 
@@ -126,6 +125,15 @@ def error(message, e_code):
         return redirect('/')
     else:
         return render_template('errors.html', message=message, e_code=e_code)
+
+
+@app.before_request
+def before_request():
+    g.user = None
+    if 'user' in session and 'passw' in session:
+        g.user = session['user']
+        g.passw = session['passw']
+
 
 if __name__ == '__main__':
     app.run(debug=True)
