@@ -1,8 +1,7 @@
 from resbot import TimeChecker, Booker
 from typing import List
-from time import sleep
-import resy_config as rc
 from read_db import get_rest_lists
+from app import app, g
 
 '''
 Top level module
@@ -67,11 +66,14 @@ def get_best_non_overelap_times():
 
 
 if __name__ == '__main__':
-    # INSTEAD of importing rc, just import login data and do decryption here. 
-    # bot = Booker(rc.email, rc.pw)
+    with open('auth_token.txt', 'r') as f:
+        auth, p_id = f.read().splitlines()
+    # bot = Booker(decrypt_message(login_data.get('email')), decrypt_message(login_data.get('password')))
     to_book = get_best_non_overelap_times()
     for slot in to_book:
-        print('nice')
+        book_tok = Booker.create_book_token(auth, slot, to_book[slot])
+        print(book_tok)
+        print(Booker.make_reservation(book_tok, auth, p_id))
         # bot.make_reservation(bot.create_book_token(slot, to_book[slot]))
 
 
