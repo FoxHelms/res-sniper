@@ -1,12 +1,5 @@
 # To Do - Prioritized
 
-- [ ] Document the abstractions. Why classes and files split the way I did? Does my flowchart make sense?
--- [ ] Web app takes links instead of searches, for eease of experience
--- [ ] Resy misbehaved a lot with my post requests, so separating classes by type of get/post behavior
--- [ ] Prioritize rest with shorter slot lists because less chances of getting res.
--- [ ] Decided to not use encryption and just write auth token to file on server
-- [ ] Expand "This project demonstrates": more detail about reverse engineering: what did you discover and use?
--- [ ] Using network inspector to find api links, copying cURL, converting to python request
 
 
 
@@ -21,6 +14,13 @@
 
 
 
+- [X] Document the abstractions. Why classes and files split the way I did? Does my flowchart make sense?
+-- [X] Web app takes links instead of searches, for eease of experience
+-- [X] Resy misbehaved a lot with my post requests, so separating classes by type of get/post behavior
+-- [X] Prioritize rest with shorter slot lists because less chances of getting res.
+-- [X] No encryption, just write auth token to server so i dont need to save login info
+- [X] Expand "This project demonstrates": more detail about reverse engineering: what did you discover and use?
+-- [X] Using network inspector to find api links, copying cURL, converting to python request
 - [X] INSTEAD of importing rc, just import login data and do decryption in sniper. 
 - [X] Change book token method from get to post json
 - [X] Polish pass on all doc strings, should make it so that person doesn't have to read code. 
