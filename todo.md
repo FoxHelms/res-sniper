@@ -1,12 +1,13 @@
 # To Do - Prioritized
 
+- [ ] Run Docker in project folder
+-- [ ] Add to readme
 
 
 
 ## Everything Else
 
 - [ ] Record quick video using the software so that someone can see the app in action if they dont wanna build it. 
-- [ ] Run Docker in project folder
 - [ ] host everything on Heroku
 - [ ] Use Cron To Go to run MakeRes on db every morning at 9am EST. 
 

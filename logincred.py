@@ -1,1 +1,0 @@
-login_data = {'email': b'gAAAAABlCeX9DZ4MAdkhY6f5bVWhUX9OGpVghCAVyb24VIuR9y8P7e1h0Q93XxqWRa4hVBdPqHjADB73i4-cz5_Yl8EvcrYerg-_HsPlViiYtXgH_M3sGHo=', 'password': b'gAAAAABlCeX9N4SVkGlgMoiMIhYDCLBdgIzmXm-hXUELXo6HhZyIpwP92Z_zru7ZD4JNoGHHR_ML5_yCeQlSQd4gcHvNSnWLZA=='}
