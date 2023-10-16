@@ -31,11 +31,12 @@ For technical reasons that are not interesting, it was hard to search for restau
 By pasting a link, it became convenient to specify a branch and choose a restaurant anywhere in the world. 
 
 
-### No Encryption
+### Lightweight User Profile Technique
 
 In earlier versions of this app, login data was stored locally so that the bot could create reservations on the user's behalf. 
 This is obviously insecure, but the bot does need a way to authenticate each reservation, otherwise resy has no idea who is doing what. 
 The solution is to store the authentication token locally, as it is meaningless outside a resy session context and does not provide any user data, nor can user data be extracted. 
+This technique offers the functionality of a user account without needing a database or encryption algorithm. 
 This decision was essential in reducing the app's complexity and therefore greatly increased speed. 
 
 
@@ -87,10 +88,9 @@ I wrote a wrapper for the requests module that handles errors, controls methods 
 I also wrote unit tests that mock server functionality. 
 I converted cURL commands to python requests. 
 
+### Containerization with Docker
 
-* Containerization with Docker
-* Crontab task scheduling (with Heroku)
+I built a DockerImage so that this app could be easily deployed to servers and other local machines. 
 
 ### To Do
-- [] Build docker image
-- [] Host app on Heroku
+- [] Host app on PythonAnywhere (paid tier)
