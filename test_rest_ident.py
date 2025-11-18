@@ -4,9 +4,9 @@ from unittest.mock import patch
 
 def test_url_to_name_and_city_ny():
     '''should be able to get thing for anywhere in world'''
-    test_url_1 = 'https://resy.com/cities/ny/shukette?date=2023-09-12&seats=2'
+    test_url_1 = 'https://resy.com/cities/new-york-ny/venues/shukette?seats=2&date=2025-11-18'
     test_name_1 = 'shukette'
-    test_city_1 = 'ny'
+    test_city_1 = 'new-york-ny'
     gen_city_1, gen_name_1 = resbot.RestaurantIdentifier.convert_url(test_url_1)
     assert gen_city_1 == test_city_1
     assert gen_name_1 == test_name_1
@@ -15,17 +15,17 @@ def test_url_to_name_and_city_rmi():
     '''should be able to get thing for anywhere in world'''
     # test_url_1 = 'https://resy.com/cities/ny/shukette?date=2023-09-12&seats=2'
     test_name_2 = 'kruse-and-muer-on-main'
-    test_city_2 = 'rmi'
-    test_url_2 = 'https://resy.com/cities/rmi/kruse-and-muer-on-main?date=2023-09-14&seats=2'
+    test_city_2 = 'rochester-mi'
+    test_url_2 = 'https://resy.com/cities/rochester-mi/venues/kruse-and-muer-on-main?seats=2&date=2025-11-18'
     gen_city_2, gen_name_2 = resbot.RestaurantIdentifier.convert_url(test_url_2)
     assert gen_city_2 == test_city_2
     assert gen_name_2 == test_name_2
 
 def test_url_to_name_and_city_tky():
     '''should be able to get thing for anywhere in world'''
-    test_url_3 = 'https://resy.com/cities/tky/ginza-yoshoku-mikasa-kaikan-ikebukuro-parco?date=2023-09-14&seats=2'
+    test_url_3 = 'https://resy.com/cities/tokyo-japan/venues/ginza-yoshoku-mikasa-kaikan-ikebukuro-parco?seats=2&date=2025-11-18&query=Ginzayoshoku&activeView=list'
     test_name_3 = 'ginza-yoshoku-mikasa-kaikan-ikebukuro-parco'
-    test_city_3 = 'tky'
+    test_city_3 = 'tokyo-japan'
     gen_city_3, gen_name_3 = resbot.RestaurantIdentifier.convert_url(test_url_3)
     assert gen_city_3 == test_city_3
     assert gen_name_3 == test_name_3
