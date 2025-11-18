@@ -26,10 +26,12 @@ def requester(m,upath, *params, **data):
     if m == 'postj':
         response: r.models.Response = r.post(upath, headers=hdrs, json=data)
     elif m == 'post':
-        # hdrs['x-resy-auth-token'] = params[0] >> need to create as addnl header
-        response: r.models.Response = r.post(upath, headers=hdrs, data=data)
+        if params:
+            hdrs['x-resy-auth-token'] = params[0] # >> need to create as addnl header
+        response: r.models.Response = r.post(upath, headers=hdrs, json=data['data'], allow_redirects=True)
         if response.status_code != 200 or response.status_code != 201:
-            return response.status_code
+            return response.json()
+    
     elif m == 'get':
         if params:
             response: r.models.Response = r.get(upath, headers=hdrs, params=params)
@@ -42,6 +44,7 @@ def requester(m,upath, *params, **data):
             return response.json()
         except:
             raise NoJson
+
 
 
 class Authenticator:
@@ -67,14 +70,15 @@ class RestaurantIdentifier:
     @classmethod
     def convert_url(cls, url_string):
         '''
-        Takes a url and parses out the city name and restaurant name
-        Returns a list: [city abbrev, restaurant name]
+        Takes a url and parses out the city name and restaurant name.
+        Returns tuple: (city, restaurant)
         '''
-        # https://resy.com/cities/ny/shukette?date=2023-09-12&seats=2
-        rname_q = re.search('cities/(.*)date.*', url_string)
-        rest_string = rname_q.group(1)[:-1]
-        rest_package = rest_string.split('/')
-        return rest_package
+        match = re.search(r'cities/([^/]+)/[^/]+/([^/?#]+)', url_string)
+        if not match:
+            raise ValueError(f"Could not parse city and restaurant from URL: {url_string}")
+
+        city, rest = match.group(1), match.group(2)
+        return city, rest
 
     @classmethod
     def get_venue_id(cls, url_string: str) -> int:
@@ -159,10 +163,14 @@ class Booker:
         post json request to API url of the restaurant
         parse the book token from the response
         return book token'''
-        data = {'x-resy-auth-token': auth, 'config_id': all_time_confs_value,
-        'day': all_time_confs_key[:10],'party_size': '2'}
-        details = requester('postj', 'https://api.resy.com/3/details', **data)
-        return details['book_token']['value']
+        data = {
+            'commit': 0, 
+            'config_id': all_time_confs_value,
+            'day': all_time_confs_key[:10],
+            'party_size': '2'
+            }
+        details = requester('post', 'https://api.resy.com/3/details', auth, data=data)
+        return details['venue']['book_token']['value']
     
     @classmethod
     def make_reservation(cls, book_token: str, auth, p_id) -> int:
@@ -174,5 +182,5 @@ class Booker:
         'struct_payment_method': p_id,
         'source_id': 'resy.com-venue-details'
         }
-        return requester('post','https://api.resy.com/3/book', auth, **data)
+        return requester('post','https://api.resy.com/3/book', params = [auth], data=data)
         

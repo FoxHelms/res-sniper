@@ -48,7 +48,6 @@ def get_best_non_overelap_times():
     Return a dictionary of best_time:conf_ids
     '''
     sorted_rests = sort_rest_list() # {ID: avail_days}
-    # print(sorted_rests)
     priority_tuple = sorted_rests.pop(0)
     trimmed_list = []
     date_set = priority_tuple[1]
@@ -68,13 +67,13 @@ def get_best_non_overelap_times():
 if __name__ == '__main__':
     with open('auth_token.txt', 'r') as f:
         auth, p_id = f.read().splitlines()
-    # bot = Booker(decrypt_message(login_data.get('email')), decrypt_message(login_data.get('password')))
+    # bot = Booker() # comment out
     to_book = get_best_non_overelap_times()
     for slot in to_book:
         book_tok = Booker.create_book_token(auth, slot, to_book[slot])
         print(book_tok)
         print(Booker.make_reservation(book_tok, auth, p_id))
-        # bot.make_reservation(bot.create_book_token(slot, to_book[slot]))
+        # bot.make_reservation(bot.create_book_token(auth, slot, to_book[slot])) # comment out
 
 
         
