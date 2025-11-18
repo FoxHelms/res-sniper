@@ -1,3 +1,9 @@
+# Demo
+
+Check out this video to see the app in action!
+
+https://youtu.be/ERhh6W-81CM
+
 # Purpose
 
 ResSniper is a web app that allows you to book reservations at restaurants that are otherwise impossible to get. 
