@@ -29,7 +29,7 @@ def test_get_method(mock_get):
 
 @patch('resbot.requester')
 def test_get_returns_json(mock_get):
-    fake_json = {'name':'Scooby'}
+    fake_json = {'data':{'name':'Scooby'}}
     mock_get.return_value = fake_json
     assert resbot.requester('get', 'https://www.google.com') == fake_json
 
@@ -40,5 +40,5 @@ def test_post_method(mock_get):
     mock_response = Mock()
     mock_get.return_value = mock_response
     resbot.requester('post', 'https://api.website.com', **fake_data)
-    mock_get.assert_called_with('https://api.website.com', headers=hdrs, data=fake_data)
+    mock_get.assert_called_with('https://api.website.com', headers=hdrs, json=fake_data, allow_redirects=True)
     
